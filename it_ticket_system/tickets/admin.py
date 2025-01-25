@@ -1,39 +1,14 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from .models import Ticket
 
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
-    list_display = (
-        'unique_id',
-        'ticket_id',
-        'email',
-        'title',
-        'status',
-        'escalation_level',
-        'created_at',
-        'updated_at',
-    )
-    list_filter = ('status', 'escalation_level', 'created_at')
-    search_fields = ('email', 'title', 'description', 'unique_id')
-    ordering = ('-created_at',)
+    list_display = ('ticket_id', 'title', 'status', 'view_ticket')
 
-    fieldsets = (
-        ("Ticket Information", {
-            'fields': ('unique_id', 'email', 'ticket_id', 'title', 'description', 'attachment')
-        }),
-        ("Status and Escalation", {
-            'fields': ('status', 'escalation_level')
-        }),
-        ("Timestamps", {
-            'fields': ('created_at', 'updated_at')
-        }),
-    )
-    readonly_fields = ('unique_id', 'ticket_id', 'created_at', 'updated_at')
-
-    def has_add_permission(self, request):
-        """Disallow manual addition of tickets from admin panel."""
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        """Allow ticket deletion only for superusers."""
-        return request.user.is_superuser
+    def view_ticket(self, obj):
+        return format_html(
+            '<a href="{}" target="_blank">View Ticket</a>',
+            f"/tickets/{obj.ticket_id}/"
+        )
+    view_ticket.short_description = "View Ticket"

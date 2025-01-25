@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tickets',
     'rest_framework',
+    'work_orders',
 ]
 
 MIDDLEWARE = [
@@ -52,11 +53,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'it_ticket_system.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # Adjust BASE_DIR as needed
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,6 +68,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'it_ticket_system.wsgi.application'
 

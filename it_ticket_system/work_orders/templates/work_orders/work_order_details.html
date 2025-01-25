@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Order Details</title>
+</head>
+<body>
+    <h1>Work Order for Ticket: {{ work_order.ticket.ticket_id }}</h1>
+    <p><strong>Work Performed:</strong> {{ work_order.work_performed }}</p>
+    <p><strong>Parts Used:</strong> {{ work_order.parts_used }}</p>
+    <p><strong>Technician Signature:</strong> {{ work_order.technician_signature }}</p>
+    <p><strong>Customer Signature:</strong> {{ work_order.customer_signature }}</p>
+    <p><strong>Date Completed:</strong> {{ work_order.date_completed }}</p>
+</body>
+</html>

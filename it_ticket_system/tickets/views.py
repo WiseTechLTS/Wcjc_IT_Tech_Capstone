@@ -46,11 +46,5 @@ def ticket_detail(request, ticket_id):
     elif request.method == 'DELETE':
         ticket.delete()
         return Response({"message": "Ticket deleted"}, status=status.HTTP_204_NO_CONTENT)
+    return render(request, 'tickets/ticket_detail.html', {'ticket': ticket})
 
-
-def work_order_view(request, unique_id):
-    ticket = get_object_or_404(Ticket, unique_id=unique_id)
-    return render(request, 'tickets/work_order.html', {'ticket': ticket})
-def work_order_list_view(request):
-    tickets = Ticket.objects.all()
-    return render(request, 'tickets/work_order_list.html', {'tickets': tickets})
