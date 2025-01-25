@@ -6,14 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IT Email Ticket System</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <!-- Include the React app build -->
-    <script defer src="/path-to-your-react-app/static/js/main.js"></script>
 </head>
 
 <body class="bg-light">
-    <!-- React App Mount Point -->
+    <div class="text-center mb-4">
+        <h4 id="connection-status" class="text-muted">Checking database connection...</h4>
+        <h4 id="get-connection-status" class="text-muted">GET Connection: Checking...</h4>
+        <h4 id="post-connection-status" class="text-muted">POST Connection: Not yet tested</h4>
+    </div>
+
     <div id="root"></div>
-    
     <div class="container mt-5">
         <h1 class="text-center mb-4">IT Email Ticket System</h1>
         <form id="workOrderForm" class="card shadow p-4 mb-4">
@@ -63,67 +65,155 @@
             <button type="button" class="btn btn-primary w-100" id="saveButton">Save Work Order</button>
         </form>
 
-        <!-- Section to display saved work orders -->
-        <div id="adminSection" class="card shadow p-4">
-            <h2>Saved Work Orders</h2>
-            <ul id="workOrderList" class="list-group"></ul>
+        <!-- Combined Section to display Saved Work Orders and IT Tickets -->
+        <div id="combinedSection" class="card shadow p-4 mt-4">
+            <h2>Work Orders and IT Tickets</h2>
+            <div class="table-responsive">
+                <table id="combinedTable" class="table table-striped table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">Source</th>
+                            <th scope="col">Customer Name</th>
+                            <th scope="col">Account Number</th>
+                            <th scope="col">Work Requested</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script>
-        // Function to generate a unique key (e.g., UUID-like)
-        function generateUniqueKey() {
-            return `key-${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
+        // Function to update and log connection statuses
+        function updateConnectionStatus(type, status) {
+            const statusElement = document.getElementById(`${type}-connection-status`);
+            if (status === "Good") {
+                statusElement.textContent = `${type.toUpperCase()} Connection: Good`;
+                statusElement.className = "text-success";
+            } else {
+                statusElement.textContent = `${type.toUpperCase()} Connection: Bad`;
+                statusElement.className = "text-danger";
+            }
+            console.log(`${type.toUpperCase()} Connection Status: ${status}`);
         }
 
-        // Save button click event handler
-        document.getElementById("saveButton").addEventListener("click", function () {
+        // Function to fetch IT tickets from the backend
+        async function fetchTickets() {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/it_ticket/list-tickets/', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                });
+
+                if (response.ok) {
+                    const tickets = await response.json();
+                    updateConnectionStatus("get", "Good");
+                    console.log("GET request succeeded.", tickets);
+                    displayCombinedTable(tickets, "Database"); // Add tickets to combined table
+                } else {
+                    updateConnectionStatus("get", "Bad");
+                    console.error("GET request failed with status:", response.status);
+                }
+            } catch (error) {
+                updateConnectionStatus("get", "Bad");
+                console.error("GET request error:", error);
+            }
+        }
+
+        // Function to save a work order
+        async function saveWorkOrder() {
             const form = document.getElementById("workOrderForm");
             const formData = new FormData(form);
             const workOrderData = {};
 
-            // Convert form data to JSON object
+            // Convert form data to JSON
             formData.forEach((value, key) => {
                 workOrderData[key] = value.trim();
             });
 
-            // Generate a unique key for this work order
-            const uniqueKey = generateUniqueKey();
+            // Add unique key
+            const uniqueKey = `key-${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
             workOrderData.uniqueKey = uniqueKey;
 
-            // Save the ticket to localStorage using the unique key
+            // Save to localStorage
             localStorage.setItem(uniqueKey, JSON.stringify(workOrderData));
+            console.log(`Saved locally: ${uniqueKey}`, workOrderData);
 
-            // Log the saved work order to the console
-            console.log(`Work Order Saved with Key ${uniqueKey}:`, workOrderData);
+            // Add to combined table as Local Storage
+            displayCombinedTable([workOrderData], "Local Storage");
 
-            // Provide user feedback and display the unique key below the form
-            alert(`Work Order saved successfully with Key: ${uniqueKey}`);
-            displaySavedWorkOrders();
+            // Attempt to send to the backend
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/it_ticket/create-ticket/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(workOrderData),
+                });
 
-            // Optionally, reset the form after saving
+                if (response.ok) {
+                    const result = await response.json();
+                    alert("Work order saved successfully!");
+                    updateConnectionStatus("post", "Good");
+                    console.log("POST request succeeded:", result);
+                } else {
+                    const errorData = await response.json();
+                    alert("Failed to save work order to the backend.");
+                    updateConnectionStatus("post", "Bad");
+                    console.error("POST request failed:", errorData);
+                }
+            } catch (error) {
+                updateConnectionStatus("post", "Bad");
+                console.error("POST request error:", error);
+            }
+
+            // Reset the form
             form.reset();
-        });
+        }
 
-        // Function to display all saved work orders
-        function displaySavedWorkOrders() {
-            const workOrderList = document.getElementById("workOrderList");
-            workOrderList.innerHTML = ""; // Clear the list
+        // Function to display combined table of work orders and IT tickets
+        function displayCombinedTable(items, source) {
+            const combinedTableBody = document.querySelector("#combinedTable tbody");
+
+            items.forEach(item => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${source}</td>
+                    <td>${item.customer_name || "N/A"}</td>
+                    <td>${item.account_number || "N/A"}</td>
+                    <td>${item.work_requested || "N/A"}</td>
+                `;
+
+                combinedTableBody.appendChild(row);
+            });
+        }
+
+        // Function to load saved work orders from localStorage
+        function loadSavedWorkOrders() {
+            const savedWorkOrders = [];
 
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 const data = JSON.parse(localStorage.getItem(key));
-
-                // Create a list item for each work order
-                const listItem = document.createElement("li");
-                listItem.className = "list-group-item";
-                listItem.textContent = `Key: ${key}, Account: ${data.account_number}, Customer: ${data.customer_name}`;
-                workOrderList.appendChild(listItem);
+                savedWorkOrders.push(data);
             }
+
+            displayCombinedTable(savedWorkOrders, "Local Storage");
         }
 
-        // Call the function on page load to display saved work orders
-        window.onload = displaySavedWorkOrders;
+        // Initialize connection checks and event listeners
+        window.onload = () => {
+            fetchTickets(); // Fetch tickets and test GET connection
+            loadSavedWorkOrders(); // Load saved work orders from localStorage
+        };
+
+        document.getElementById("saveButton").addEventListener("click", (event) => {
+            event.preventDefault();
+            saveWorkOrder(); // Save work order on button click
+        });
     </script>
 </body>
 
