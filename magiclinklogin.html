@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Link Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Magic Link Login</h1>
+        <form id="magicLinkForm" class="card shadow p-4">
+            <div class="mb-3">
+                <label for="email" class="form-label">Enter your Email:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <button type="button" class="btn btn-primary w-100" id="sendLinkButton">Send Login Link</button>
+        </form>
+
+        <div id="feedback" class="mt-4 text-center text-muted"></div>
+    </div>
+
+    <script>
+        document.getElementById("sendLinkButton").addEventListener("click", async () => {
+            const email = document.getElementById("email").value.trim();
+
+            // Validate email format
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById("feedback").textContent = "Please enter a valid email address.";
+                console.log("Invalid email format entered.");
+                return;
+            }
+
+            console.log("Valid email entered:", email);
+            document.getElementById("feedback").textContent = "Sending login link...";
+
+            try {
+                // Send request to backend
+                const response = await fetch("http://127.0.0.1:8000/api/send-magic-link/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email }),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    document.getElementById("feedback").textContent = result.message || "Login link sent successfully!";
+                    console.log("Magic link sent successfully:", result);
+                } else {
+                    const errorData = await response.json();
+                    document.getElementById("feedback").textContent = errorData.message || "Failed to send login link.";
+                    console.error("Error sending magic link:", errorData);
+                }
+            } catch (error) {
+                document.getElementById("feedback").textContent = "An error occurred. Please try again later.";
+                console.error("Request failed:", error);
+            }
+        });
+    </script>
+</body>
+
+</html>
