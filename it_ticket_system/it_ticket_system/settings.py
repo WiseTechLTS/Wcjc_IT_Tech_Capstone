@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!_==49&+d$d-qld=k#4d3287=!_(2dq5-5)io_*_(y34hnhxjh'
+SECRET_KEY = 'django-insecure--axn-2co)#u2gxa3!vfgkvi8g3zu2sp6gt7s_w059v3-^jib4p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # Set to False in production
+DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']  # Update with your domain or IP in production
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -37,16 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tickets',
     'rest_framework',
-    'tickets',  # Your tickets app
-    'corsheaders',  # Enable Cross-Origin Resource Sharing (CORS)
-    'ticket_email', # Newly created app for email ticketing
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # CORS middleware
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -81,8 +78,7 @@ WSGI_APPLICATION = 'it_ticket_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',  # Use SQLite for development
-        # Replace with PostgreSQL or MySQL in production
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -111,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'  # Adjust to your local timezone if needed
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -120,42 +116,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# Directory for generated work orders
-GENERATED_WORK_ORDER_DIR = BASE_DIR / 'generated_work_orders'
-
-# Media files (uploaded files)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-# CORS Configuration
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',  # Add your frontend URL here
-    'http://127.0.0.1:3000',
-]
-
-# Django REST Framework configuration (optional)
-REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-    ],
-    'DEFAULT_PARSER_CLASSES': [
-        'rest_framework.parsers.JSONParser',
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ],
-}
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

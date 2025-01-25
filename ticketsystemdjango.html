@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Email Ticket System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">IT Email Ticket System</h1>
+        <form id="workOrderForm" class="card shadow p-4 mb-4">
+            <fieldset>
+                <legend class="mb-3">Work Order Information</legend>
+
+                <!-- Customer and Account Information -->
+                <div class="mb-3">
+                    <label for="customer-name" class="form-label">Customer Name:</label>
+                    <input type="text" id="customer-name" name="customer_name" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="account-number" class="form-label">Account Number:</label>
+                    <input type="text" id="account-number" name="account_number" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="store-address" class="form-label">Store Address:</label>
+                    <textarea id="store-address" name="store_address" rows="3" class="form-control" required></textarea>
+                </div>
+
+                <!-- Work Request Details -->
+                <div class="mb-3">
+                    <label for="work-request" class="form-label">Work Requested:</label>
+                    <textarea id="work-request" name="work_requested" rows="5" class="form-control" required></textarea>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="mb-3">
+                    <label for="contact-name" class="form-label">Store Contact Name:</label>
+                    <input type="text" id="contact-name" name="store_contact_name" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="contact-phone" class="form-label">Store Contact Phone:</label>
+                    <input type="tel" id="contact-phone" name="store_contact_phone" class="form-control" required>
+                </div>
+
+                <!-- Work Performed -->
+                <div class="mb-3">
+                    <label for="work-performed" class="form-label">Work Performed:</label>
+                    <textarea id="work-performed" name="work_performed" rows="5" class="form-control"></textarea>
+                </div>
+            </fieldset>
+
+            <button type="button" class="btn btn-primary w-100" id="saveButton">Save Work Order</button>
+        </form>
+
+        <!-- Section to display saved work orders -->
+        <div id="adminSection" class="card shadow p-4">
+            <h2>Saved Work Orders</h2>
+            <ul id="workOrderList" class="list-group"></ul>
+        </div>
+    </div>
+
+    <script>
+        // Functionality for saving work orders in localStorage
+        document.getElementById("saveButton").addEventListener("click", function () {
+            const form = document.getElementById("workOrderForm"); // Get the form element
+            const formData = new FormData(form); // Create a FormData object to collect form inputs
+            const workOrderData = {}; // Object to store form data
+
+            // Convert form data to a JSON object
+            formData.forEach((value, key) => {
+                workOrderData[key] = value.trim(); // Trim whitespace for cleaner data
+            });
+
+            // Generate a unique key for each work order based on current timestamp
+            const uniqueKey = `key-${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
+            workOrderData.uniqueKey = uniqueKey; // Add the unique key to the work order data
+
+            // Save the work order to localStorage
+            localStorage.setItem(uniqueKey, JSON.stringify(workOrderData));
+
+            // Log saved work order details in the console for debugging
+            console.log(`Work Order Saved with Key ${uniqueKey}:`, workOrderData);
+
+            // Notify the user and refresh the displayed list of work orders
+            alert(`Work Order saved successfully with Key: ${uniqueKey}`);
+            displaySavedWorkOrders();
+
+            // Reset the form after saving
+            form.reset();
+        });
+
+        // Function to display all saved work orders from localStorage
+        function displaySavedWorkOrders() {
+            const workOrderList = document.getElementById("workOrderList"); // Get the list container
+            workOrderList.innerHTML = ""; // Clear existing list items
+
+            // Iterate through all items in localStorage
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i); // Get the unique key
+                const data = JSON.parse(localStorage.getItem(key)); // Parse the stored data
+
+                // Create a list item for each saved work order
+                const listItem = document.createElement("li");
+                listItem.className = "list-group-item";
+                listItem.textContent = `Key: ${key}, Account: ${data.account_number}, Customer: ${data.customer_name}`;
+                workOrderList.appendChild(listItem);
+            }
+        }
+
+        // Display work orders when the page loads
+        window.onload = displaySavedWorkOrders;
+
+        // New functionality: Send work order data to Django API
+        document.getElementById("saveButton").addEventListener("click", async function (event) {
+            event.preventDefault(); // Prevent default button behavior
+
+            const form = document.getElementById("workOrderForm"); // Get the form element
+            const formData = new FormData(form); // Collect form data
+
+            // Convert form data to JSON object
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value.trim(); // Trim input values for consistency
+            });
+
+            try {
+                // Send POST request to the Django backend
+                const response = await fetch('http://127.0.0.1:8000/create-ticket/', {
+                    method: 'POST', // Specify HTTP method
+                    headers: {
+                        'Content-Type': 'application/json' // Indicate JSON content type
+                    },
+                    body: JSON.stringify(data) // Convert data to JSON string for transmission
+                });
+
+                if (response.ok) {
+                    const result = await response.json(); // Parse response JSON
+                    alert(result.message || "Work order saved successfully!"); // Notify success
+                    form.reset(); // Clear the form
+                } else {
+                    const errorData = await response.json(); // Parse error details
+                    alert("Failed to save work order: " + JSON.stringify(errorData)); // Notify failure
+                }
+            } catch (error) {
+                console.error("Error saving work order:", error); // Log error for debugging
+                alert("An error occurred while saving the work order."); // Notify error
+            }
+        });
+    </script>
+</body>
+
+</html>

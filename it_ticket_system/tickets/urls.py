@@ -1,7 +1,10 @@
 from django.urls import path
-from .views import WorkOrderListCreateView, WorkOrderDetailView
+from . import views
 
 urlpatterns = [
-    path('', WorkOrderListCreateView.as_view(), name='work-order-list-create'),  # List and Create work orders
-    path('<int:pk>/', WorkOrderDetailView.as_view(), name='work-order-detail'),  # Retrieve, Update, or Delete work order by ID
+    path('create-ticket/', views.create_ticket, name='create_ticket'),
+    path('tickets/', views.get_all_tickets, name='get_all_tickets'),
+    path('ticket/<int:ticket_id>/', views.ticket_detail, name='ticket_detail'),
+    path('work-order/<uuid:unique_id>/', views.work_order_view, name='work_order'),
+    path('work-orders/', views.work_order_list_view, name='work_order_list'),
 ]
