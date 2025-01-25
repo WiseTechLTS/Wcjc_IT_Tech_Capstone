@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'tickets',  # Your tickets app
     'corsheaders',  # Enable Cross-Origin Resource Sharing (CORS)
+    'ticket_email', # Newly created app for email ticketing
 ]
 
 MIDDLEWARE = [
