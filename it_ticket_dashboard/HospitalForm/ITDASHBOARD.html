@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unified IT Ticket System with Dashboard</title>
+
+  <!-- Bootstrap & FontAwesome -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+
+  <!-- Inline Styles for Main Page and All Tabs -->
+  <style>
+    /* ========== Common Base Styles ========== */
+    body {
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    .main-container {
+      padding: 20px;
+    }
+    .hamburger-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: transparent;
+      border: none;
+      color: #000;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 9999;
+    }
+    header h1 {
+      margin-top: 40px;
+    }
+
+    /* ========== Standard Submit Ticket Tab ========== */
+    .needs-validation {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ========== Hospital Trouble Ticket Tab ========== */
+    .hospital-ticket-container {
+      font-family: Arial, sans-serif;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f4f4f4;
+      max-width: 600px;
+      border-radius: 8px;
+      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+    }
+    .hospital-ticket-inner label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+    .hospital-ticket-inner input,
+    .hospital-ticket-inner select,
+    .hospital-ticket-inner textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .hospital-ticket-inner .priority {
+      margin-top: 10px;
+    }
+    .hospital-ticket-inner button {
+      background-color: #28a745;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    .hospital-ticket-inner button:hover {
+      background-color: #218838;
+    }
+
+    /* ========== Ticket Dashboard Tab ========== */
+    .dashboard-container {
+      margin: 0 auto;
+      max-width: 1200px;
+    }
+    .dashboard-container h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-gap: 20px;
+    }
+    .ticket-card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .ticket-card h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      color: #333;
+    }
+    .ticket-field {
+      margin-bottom: 8px;
+    }
+    .ticket-field label {
+      font-weight: bold;
+    }
+    .ticket-actions {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ticket-actions label {
+      font-weight: normal;
+      margin-bottom: 4px;
+    }
+    .ticket-actions select {
+      width: 100%;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button.save-btn {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 8px 12px;
+      width: fit-content;
+    }
+    button.save-btn:hover {
+      background-color: #0069d9;
+    }
+    button.delete-btn {
+      background-color: #dc3545;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 8px 12px;
+      width: fit-content;
+    }
+    button.delete-btn:hover {
+      background-color: #c82333;
+    }
+    .empty-message {
+      text-align: center;
+      font-weight: bold;
+      color: #555;
+      grid-column: 1 / -1;
+    }
+    .clear-btn {
+      display: block;
+      margin: 20px auto 0;
+      padding: 10px 15px;
+      background-color: #6c757d;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .clear-btn:hover {
+      background-color: #5a6268;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Offcanvas Menu for Tabs -->
+  <div
+    class="offcanvas offcanvas-end"
+    tabindex="-1"
+    id="offcanvasTabs"
+    aria-labelledby="offcanvasTabsLabel"
+  >
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasTabsLabel">Navigation</h5>
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <button
+            class="nav-link active"
+            id="ticket-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#ticket"
+            type="button"
+            role="tab"
+            aria-controls="ticket"
+            aria-selected="true"
+          >
+            Submit Ticket
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            id="admin-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#admin"
+            type="button"
+            role="tab"
+            aria-controls="admin"
+            aria-selected="false"
+          >
+            Admin Login
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            id="hospital-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#hospital"
+            type="button"
+            role="tab"
+            aria-controls="hospital"
+            aria-selected="false"
+          >
+            Hospital Trouble Ticket
+          </button>
+        </li>
+        <!-- ========== New Tab for the Ticket Dashboard ========== -->
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            id="dashboard-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#dashboard"
+            type="button"
+            role="tab"
+            aria-controls="dashboard"
+            aria-selected="false"
+          >
+            Ticket Dashboard
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Hamburger Button to Trigger Offcanvas -->
+  <button
+    class="hamburger-btn"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasTabs"
+    aria-controls="offcanvasTabs"
+  >
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div class="main-container">
+    <header>
+     
+    </header>
+
+    <!-- ========== Tabs Container ========== -->
+    <section class="tab-content" id="myTabContent">
+      <!-- ========== 1) Standard Submit Ticket Tab ========== -->
+      <article
+        class="tab-pane fade show active"
+        id="ticket"
+        role="tabpanel"
+        aria-labelledby="ticket-tab"
+      >
+        <header class="card-header bg-primary text-white text-center">
+          <h2>Submit an IT Ticket</h2>
+        </header>
+        <div class="card-body bg-light text-dark">
+          <form id="ticketForm" class="needs-validation" novalidate>
+            <fieldset>
+              <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                  placeholder="Enter your name"
+                  required
+                />
+                <div class="invalid-feedback">Please enter your name.</div>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                />
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+              </div>
+              <div class="mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phone"
+                  name="phone"
+                  placeholder="Enter your phone number"
+                  required
+                />
+                <div class="invalid-feedback">Please enter your phone number.</div>
+              </div>
+              <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  name="address"
+                  placeholder="Enter your address"
+                  required
+                />
+                <div class="invalid-feedback">Please enter your address.</div>
+              </div>
+              <div class="mb-3">
+                <label for="text" class="form-label">Issue Description</label>
+                <textarea
+                  class="form-control"
+                  id="text"
+                  name="text"
+                  rows="4"
+                  placeholder="Describe your issue"
+                  required
+                ></textarea>
+                <div class="invalid-feedback">Please describe your issue.</div>
+              </div>
+              <div class="mb-3">
+                <label for="screenshot" class="form-label"
+                  >Upload Screenshot (optional)</label
+                >
+                <input
+                  type="file"
+                  class="form-control"
+                  id="screenshot"
+                  name="screenshot"
+                  accept="image/*"
+                />
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit Ticket</button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </article>
+
+      <!-- ========== 2) Admin Login Tab ========== -->
+      <article
+        class="tab-pane fade"
+        id="admin"
+        role="tabpanel"
+        aria-labelledby="admin-tab"
+      >
+        <header class="card-header bg-secondary text-white text-center">
+          <h2>Admin Login</h2>
+        </header>
+        <div class="card-body bg-light text-dark">
+          <form id="adminLoginForm" class="needs-validation" novalidate>
+            <fieldset>
+              <div class="mb-3">
+                <label for="adminUsername" class="form-label">Username</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="adminUsername"
+                  name="adminUsername"
+                  placeholder="Enter your username"
+                  required
+                />
+                <div class="invalid-feedback">Please enter your username.</div>
+              </div>
+              <div class="mb-3">
+                <label for="adminPassword" class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="adminPassword"
+                  name="adminPassword"
+                  placeholder="Enter your password"
+                  required
+                />
+                <div class="invalid-feedback">Please enter your password.</div>
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-secondary">Login</button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </article>
+
+      <!-- ========== 3) Hospital Trouble Ticket Tab ========== -->
+      <article
+        class="tab-pane fade"
+        id="hospital"
+        role="tabpanel"
+        aria-labelledby="hospital-tab"
+      >
+        <header class="card-header bg-success text-white text-center">
+          <h2>Hospital Trouble Ticket</h2>
+        </header>
+        <div class="hospital-ticket-container">
+          <div class="hospital-ticket-inner">
+            <form
+              id="hospitalTicketForm"
+              action="submit_ticket.php"
+              method="post"
+              novalidate
+            >
+              <!-- Department -->
+              <label for="hospitalDepartment">Department:</label>
+              <select
+                id="hospitalDepartment"
+                name="hospitalDepartment"
+                required
+                onchange="showHospitalSubDepartments()"
+              >
+                <option value="" disabled selected>Select a department category</option>
+                <option value="Medical">Medical Departments</option>
+                <option value="Administrative">Administrative Departments</option>
+                <option value="Support">Support/Ancillary Departments</option>
+              </select>
+
+              <!-- Medical Sub-Department -->
+              <div id="hospitalMedicalSub" style="display: none;">
+                <label for="hospitalMedicalDepartment">Medical Sub-Department:</label>
+                <select id="hospitalMedicalDepartment">
+                  <option value="ED">Emergency Department (ED)</option>
+                  <option value="OPD">Outpatient Department (OPD)</option>
+                  <option value="Inpatient">Inpatient Department</option>
+                  <option value="Surgery">Surgery (Operating Theatres)</option>
+                  <option value="ICU">Intensive Care Unit (ICU)</option>
+                  <option value="Pediatrics">Pediatrics</option>
+                  <option value="OB-GYN">Obstetrics and Gynecology (OB-GYN)</option>
+                  <option value="Cardiology">Cardiology</option>
+                  <option value="Oncology">Oncology</option>
+                  <option value="Orthopedics">Orthopedics</option>
+                  <option value="Neurology">Neurology</option>
+                  <option value="Psychiatry">Psychiatry and Mental Health</option>
+                  <option value="Dermatology">Dermatology</option>
+                  <option value="Radiology">Radiology and Imaging</option>
+                  <option value="Pathology">Pathology</option>
+                </select>
+              </div>
+
+              <!-- Administrative Sub-Department -->
+              <div id="hospitalAdminSub" style="display: none;">
+                <label for="hospitalAdminDepartment"
+                  >Administrative Sub-Department:</label
+                >
+                <select id="hospitalAdminDepartment">
+                  <option value="Admissions">Admissions and Registration</option>
+                  <option value="Billing">Billing and Finance</option>
+                  <option value="HR">Human Resources (HR)</option>
+                  <option value="MedicalRecords">Medical Records/Health Info</option>
+                  <option value="QualityAssurance">Quality Assurance</option>
+                  <option value="PublicRelations">Public Relations/Marketing</option>
+                </select>
+              </div>
+
+              <!-- Support Sub-Department -->
+              <div id="hospitalSupportSub" style="display: none;">
+                <label for="hospitalSupportDepartment"
+                  >Support/Ancillary Sub-Department:</label
+                >
+                <select id="hospitalSupportDepartment">
+                  <option value="Pharmacy">Pharmacy</option>
+                  <option value="Laboratory">Laboratory Services</option>
+                  <option value="Biomedical">Biomedical Engineering</option>
+                  <option value="Housekeeping">Housekeeping</option>
+                  <option value="Catering">Catering and Nutrition</option>
+                  <option value="Security">Security</option>
+                  <option value="IT">IT/Technology</option>
+                  <option value="Transport">Transport Services</option>
+                </select>
+              </div>
+
+              <!-- Issue Description -->
+              <label for="hospitalIssue">Describe the Issue:</label>
+              <textarea
+                id="hospitalIssue"
+                name="hospitalIssue"
+                rows="4"
+                required
+              ></textarea>
+
+              <!-- Priority Level -->
+              <label class="priority">Priority Level:</label>
+              <input
+                type="radio"
+                id="hospitalLow"
+                name="hospitalPriority"
+                value="Low"
+                required
+              />
+              <label for="hospitalLow">🟢 Low — Minor or no immediate impact</label><br />
+
+              <input
+                type="radio"
+                id="hospitalMedium"
+                name="hospitalPriority"
+                value="Medium"
+              />
+              <label for="hospitalMedium"
+                >🟡 Medium — Manageable disruption</label
+              ><br />
+
+              <input
+                type="radio"
+                id="hospitalHigh"
+                name="hospitalPriority"
+                value="High"
+              />
+              <label for="hospitalHigh">🟠 High — Significant urgency</label><br />
+
+              <input
+                type="radio"
+                id="hospitalCritical"
+                name="hospitalPriority"
+                value="Critical"
+              />
+              <label for="hospitalCritical"
+                >🔴 Critical — Immediate attention required</label
+              ><br />
+
+              <!-- Submit Button -->
+              <button type="submit">Submit Ticket</button>
+            </form>
+          </div>
+        </div>
+      </article>
+
+      <!-- ========== 4) Ticket Dashboard Tab ========== -->
+      <article
+        class="tab-pane fade"
+        id="dashboard"
+        role="tabpanel"
+        aria-labelledby="dashboard-tab"
+      >
+        <div class="dashboard-container">
+          <h1>Hospital IT Ticket Dashboard</h1>
+          <div class="card-container" id="cardContainer">
+            <!-- Ticket cards injected by JavaScript -->
+          </div>
+          <button class="clear-btn" onclick="clearAllTickets()">Clear All Tickets</button>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <!-- Bootstrap JS (Bundle) -->
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+  ></script>
+
+  <!-- ========== Scripts for Standard Ticket Form & Admin Login ========== -->
+ <!-- ========== Scripts for Standard Ticket Form, Admin Login, and Dashboard ========== -->
+<script>
+    // ============================
+    // 1) Standard IT Ticket Form
+    // ============================
+    document.getElementById("ticketForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+  
+      const form = event.target;
+      if (!form.checkValidity()) {
+        form.classList.add("was-validated");
+        return;
+      }
+  
+      // Build an object for localStorage
+      const ticketData = {
+        department: "IT (User Submission)", // So we know it's from the IT form
+        subDepartment: "N/A",
+        issue: document.getElementById("text").value,
+        priority: "N/A",  // No priority field on the IT form
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        address: document.getElementById("address").value
+      };
+  
+      // Save to localStorage under a unique key
+      const ticketKey = `ticket-${Date.now()}`;
+      localStorage.setItem(ticketKey, JSON.stringify(ticketData));
+      console.log("=== New IT Ticket Saved ===", ticketData);
+  
+      // Provide user feedback
+      alert("Your IT Ticket has been submitted (standard form).");
+      form.reset();
+      form.classList.remove("was-validated");
+    });
+  
+    // ====================
+    // 2) Admin Login Form
+    // ====================
+    document.getElementById("adminLoginForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+  
+      const form = event.target;
+      if (!form.checkValidity()) {
+        form.classList.add("was-validated");
+        return;
+      }
+  
+      const username = document.getElementById("adminUsername").value;
+      const password = document.getElementById("adminPassword").value;
+      console.log("Admin Login Attempt:", { username, password });
+  
+      alert("Admin login submitted. (Demo only.)");
+      form.reset();
+      form.classList.remove("was-validated");
+    });
+  
+    // ============================
+    // 3) Hospital Trouble Ticket
+    // ============================
+    function showHospitalSubDepartments() {
+      const department = document.getElementById("hospitalDepartment").value;
+      document.getElementById("hospitalMedicalSub").style.display =
+        (department === "Medical") ? "block" : "none";
+      document.getElementById("hospitalAdminSub").style.display =
+        (department === "Administrative") ? "block" : "none";
+      document.getElementById("hospitalSupportSub").style.display =
+        (department === "Support") ? "block" : "none";
+    }
+  
+    const hospitalTicketForm = document.getElementById("hospitalTicketForm");
+    hospitalTicketForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+  
+      if (!hospitalTicketForm.checkValidity()) {
+        alert("Please fill out all required fields before submitting.");
+        return;
+      }
+  
+      const department = document.getElementById("hospitalDepartment").value;
+      let subDepartmentValue = "";
+      if (department === "Medical") {
+        subDepartmentValue = document.getElementById("hospitalMedicalDepartment").value;
+      } else if (department === "Administrative") {
+        subDepartmentValue = document.getElementById("hospitalAdminDepartment").value;
+      } else if (department === "Support") {
+        subDepartmentValue = document.getElementById("hospitalSupportDepartment").value;
+      }
+  
+      const jsonObject = {
+        department: department,
+        subDepartment: subDepartmentValue,
+        issue: document.getElementById("hospitalIssue").value,
+        priority: hospitalTicketForm.querySelector('input[name="hospitalPriority"]:checked').value,
+      };
+  
+      const ticketKey = `ticket-${Date.now()}`;
+      localStorage.setItem(ticketKey, JSON.stringify(jsonObject));
+  
+      console.log("=== New Hospital Ticket Saved ===", jsonObject);
+  
+      alert("✅ Hospital ticket has been successfully saved locally.");
+      hospitalTicketForm.reset();
+    });
+  
+    // =============================
+    // 4) Ticket Dashboard Logic
+    // =============================
+    function loadTickets() {
+      const cardContainer = document.getElementById("cardContainer");
+      cardContainer.innerHTML = "";
+  
+      console.log("Loading all tickets from localStorage...");
+  
+      let ticketCount = 0;
+      const allKeys = Object.keys(localStorage).filter(key => key.startsWith("ticket-"));
+      console.log("Found ticket keys:", allKeys);
+  
+      allKeys.forEach((key) => {
+        ticketCount++;
+        const ticketData = JSON.parse(localStorage.getItem(key)) || {};
+        console.log(`Loading ticket: ${key}`, ticketData);
+  
+        const cardDiv = document.createElement("div");
+        cardDiv.classList.add("ticket-card");
+  
+        // Build card HTML
+        cardDiv.innerHTML = `
+          <h2>Ticket: ${key}</h2>
+          <div class="ticket-field">
+            <label>Department:</label> ${ticketData.department || "N/A"}
+          </div>
+          <div class="ticket-field">
+            <label>Sub-Department:</label> ${ticketData.subDepartment || "N/A"}
+          </div>
+          <div class="ticket-field">
+            <label>Issue:</label> ${ticketData.issue || "N/A"}
+          </div>
+          <div class="ticket-field">
+            <label>Priority:</label> ${ticketData.priority || "N/A"}
+          </div>
+          ${ticketData.name ? `<div class="ticket-field"><label>Name:</label> ${ticketData.name}</div>` : ""}
+          ${ticketData.email ? `<div class="ticket-field"><label>Email:</label> ${ticketData.email}</div>` : ""}
+          ${ticketData.phone ? `<div class="ticket-field"><label>Phone:</label> ${ticketData.phone}</div>` : ""}
+          ${ticketData.address ? `<div class="ticket-field"><label>Address:</label> ${ticketData.address}</div>` : ""}
+  
+          <div class="ticket-actions">
+            <div>
+              <label for="prioritySelect-${key}">Change Priority:</label>
+              <select id="prioritySelect-${key}">
+                <option value="Low"      ${ticketData.priority === "Low"      ? "selected" : ""}>Low</option>
+                <option value="Medium"   ${ticketData.priority === "Medium"   ? "selected" : ""}>Medium</option>
+                <option value="High"     ${ticketData.priority === "High"     ? "selected" : ""}>High</option>
+                <option value="Critical" ${ticketData.priority === "Critical" ? "selected" : ""}>Critical</option>
+              </select>
+            </div>
+            <button class="save-btn" onclick="saveNewPriority('${key}')">Save Priority</button>
+            <button class="delete-btn" onclick="deleteTicket('${key}')">Delete Ticket</button>
+          </div>
+        `;
+        cardContainer.appendChild(cardDiv);
+      });
+  
+      if (ticketCount === 0) {
+        console.log("No tickets found in localStorage.");
+        cardContainer.innerHTML = '<p class="empty-message">No tickets found in local storage.</p>';
+      }
+    }
+  
+    function saveNewPriority(key) {
+      console.log(`saveNewPriority called for: ${key}`);
+      const selectEl = document.getElementById(`prioritySelect-${key}`);
+      if (!selectEl) return;
+  
+      const newPriority = selectEl.value;
+      const ticketData = JSON.parse(localStorage.getItem(key)) || {};
+  
+      console.log("Ticket data before update:", ticketData);
+      ticketData.priority = newPriority;
+      console.log("Ticket data after update:", ticketData);
+  
+      localStorage.setItem(key, JSON.stringify(ticketData));
+      loadTickets();
+    }
+  
+    function deleteTicket(key) {
+      console.log(`Attempting to delete ticket: ${key}`);
+      if (confirm("Are you sure you want to delete this ticket?")) {
+        localStorage.removeItem(key);
+        console.log(`Deleted ticket: ${key}`);
+        loadTickets();
+      } else {
+        console.log(`Deletion canceled for ticket: ${key}`);
+      }
+    }
+  
+    function clearAllTickets() {
+      console.log("clearAllTickets called...");
+      if (confirm("Are you sure you want to clear ALL tickets?")) {
+        Object.keys(localStorage).forEach((key) => {
+          if (key.startsWith("ticket-")) {
+            localStorage.removeItem(key);
+            console.log(`Removed: ${key}`);
+          }
+        });
+        loadTickets();
+      } else {
+        console.log("Clearing all tickets was canceled by user.");
+      }
+    }
+  
+    // Load tickets on page load
+    window.addEventListener("load", loadTickets);
+  </script>
+  <script>
+    (function() {
+      /**
+       * Configuration for the cursor trail effect
+       */
+      const TRAIL_CONFIG = {
+        // Circle styling
+        circleSize: 10,           // Radius in px
+        circleColor: 'rgba(0, 120, 255, 0.7)', // RGBA with partial transparency
+        circleBlur: '10px',       // Optional box-shadow blur
+    
+        // Animation / fade-out
+        trailLength: 15,          // How many circles are on screen at once
+        fadeSpeed: 0.02,          // How quickly each circle disappears
+    
+        // Whether to show a “primary” circle pinned to the cursor
+        showCursorRing: true,
+        ringSize: 10,
+        ringColor: 'rgba(0, 0, 100, 0.15)',
+      };
+    
+      /**
+       * Internal arrays to store circle data
+       */
+      let circles = [];       // Each element is {x, y, alpha} for trailing circles
+      let ringCircle = null;  // The “primary” ring that directly follows the cursor
+    
+      /**
+       * Create an absolutely positioned div for each trailing circle
+       */
+      function createCircle() {
+        const circle = document.createElement('div');
+        circle.style.position = 'fixed';
+        circle.style.zIndex = 99999;
+        circle.style.width = (TRAIL_CONFIG.circleSize * 2) + 'px';
+        circle.style.height = (TRAIL_CONFIG.circleSize * 2) + 'px';
+        circle.style.borderRadius = '50%';
+        circle.style.backgroundColor = TRAIL_CONFIG.circleColor;
+        circle.style.pointerEvents = 'none';
+        if (TRAIL_CONFIG.circleBlur) {
+          circle.style.boxShadow = `0 0 ${TRAIL_CONFIG.circleBlur} ${TRAIL_CONFIG.circleColor}`;
+        }
+        document.body.appendChild(circle);
+        return circle;
+      }
+    
+      /**
+       * Create the primary cursor ring (optional)
+       */
+      function createRingCircle() {
+        const ring = document.createElement('div');
+        ring.style.position = 'fixed';
+        ring.style.zIndex = 99998;
+        ring.style.width = (TRAIL_CONFIG.ringSize * 2) + 'px';
+        ring.style.height = (TRAIL_CONFIG.ringSize * 2) + 'px';
+        ring.style.borderRadius = '50%';
+        ring.style.border = `2px solid ${TRAIL_CONFIG.circleColor}`;
+        ring.style.backgroundColor = TRAIL_CONFIG.ringColor;
+        ring.style.pointerEvents = 'none';
+        ring.style.mixBlendMode = 'lighten';
+        document.body.appendChild(ring);
+        return ring;
+      }
+    
+      /**
+       * Listen to mousemove events to position the ring and add new trailing circles
+       */
+      function onMouseMove(e) {
+        const { clientX, clientY } = e;
+    
+        // Update ring’s position
+        if (ringCircle) {
+          const ringRadius = TRAIL_CONFIG.ringSize;
+          ringCircle.style.left = (clientX - ringRadius) + 'px';
+          ringCircle.style.top = (clientY - ringRadius) + 'px';
+        }
+    
+        // Insert a new trailing circle at mouse location
+        if (circles.length >= TRAIL_CONFIG.trailLength) {
+          // Reuse the oldest circle
+          const oldest = circles.shift();
+          oldest.x = clientX;
+          oldest.y = clientY;
+          oldest.alpha = 1;
+          circles.push(oldest);
+        } else {
+          // Create a new circle element & store data
+          const circleElem = createCircle();
+          circles.push({
+            elem: circleElem,
+            x: clientX,
+            y: clientY,
+            alpha: 1,
+          });
+        }
+      }
+    
+      /**
+       * Animate all trailing circles on each frame
+       */
+      function animate() {
+        circles.forEach((circleData) => {
+          const { elem, x, y, alpha } = circleData;
+    
+          // Position circle so its center is at (x, y)
+          const size = TRAIL_CONFIG.circleSize;
+          elem.style.left = (x - size) + 'px';
+          elem.style.top = (y - size) + 'px';
+    
+          // Fade out
+          circleData.alpha -= TRAIL_CONFIG.fadeSpeed;
+          if (circleData.alpha < 0) {
+            circleData.alpha = 0;
+          }
+          elem.style.opacity = circleData.alpha;
+        });
+    
+        // Request next frame
+        requestAnimationFrame(animate);
+      }
+    
+      /**
+       * Initialize the system
+       */
+      function initCursorTrail() {
+        // Create ring if configured
+        if (TRAIL_CONFIG.showCursorRing) {
+          ringCircle = createRingCircle();
+        }
+    
+        // Start listening for mouse moves
+        window.addEventListener('mousemove', onMouseMove);
+    
+        // Kick off animation loop
+        animate();
+      }
+    
+      // Run once the page loads
+      window.addEventListener('DOMContentLoaded', initCursorTrail);
+    })();
+    </script>
+    
+</body>
+</html>

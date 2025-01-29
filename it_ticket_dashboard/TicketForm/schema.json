@@ -1,0 +1,93 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "IT Ticket System Schema",
+    "description": "Schema for different types of IT tickets submitted through the dashboard.",
+    "type": "object",
+    "properties": {
+      "ticketID": {
+        "type": "string",
+        "description": "Unique identifier for the ticket, typically a UUID."
+      },
+      "name": {
+        "type": "string",
+        "description": "Full name of the user submitting the ticket."
+      },
+      "email": {
+        "type": "string",
+        "format": "email",
+        "description": "User's email address, used for ticket updates and communication."
+      },
+      "phone": {
+        "type": "string",
+        "description": "User's phone number, optional but useful for direct contact."
+      },
+      "address": {
+        "type": "string",
+        "description": "User's address (optional field)."
+      },
+      "department": {
+        "type": "string",
+        "enum": [
+          "IT (User Submission)",
+          "Medical",
+          "Administrative",
+          "Support"
+        ],
+        "description": "Department responsible for handling the ticket. Choices are predefined."
+      },
+      "subDepartment": {
+        "type": "string",
+        "description": "Optional sub-department under the main department (e.g., 'Cardiology' under 'Medical')."
+      },
+      "issue": {
+        "type": "string",
+        "description": "Detailed description of the reported problem or request."
+      },
+      "priority": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Medium",
+          "High",
+          "Critical"
+        ],
+        "description": "Urgency level of the issue, helping IT staff prioritize tickets."
+      },
+      "screenshot": {
+        "type": "string",
+        "format": "uri",
+        "description": "URL or base64-encoded string representing an optional uploaded screenshot."
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "Open",
+          "In Progress",
+          "Resolved",
+          "Closed"
+        ],
+        "description": "Current status of the ticket in the resolution process."
+      },
+      "createdAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "ISO timestamp indicating when the ticket was submitted."
+      },
+      "updatedAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "ISO timestamp indicating the last modification of the ticket."
+      }
+    },
+    "required": [
+      "ticketID",
+      "name",
+      "email",
+      "department",
+      "issue",
+      "priority",
+      "status",
+      "createdAt"
+    ]
+  }
+  
