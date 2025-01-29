@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hospital IT Trouble Ticket</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      width: 50%;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .priority {
+      margin-top: 10px;
+    }
+    button {
+      background-color: #28a745;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-lg">
+    <h2>Hospital IT Trouble Ticket</h2>
+
+    <!-- Use an ID for the form so we can attach an event listener -->
+    <form id="ticketForm" action="submit_ticket.php" method="post" novalidate>
+
+      <!-- ================== Department ================== -->
+      <label for="department">Department:</label>
+      <select id="department" name="department" required onchange="showSubDepartments()">
+        <option value="" disabled selected>Select a department category</option>
+        <option value="Medical">Medical Departments</option>
+        <option value="Administrative">Administrative Departments</option>
+        <option value="Support">Support/Ancillary Departments</option>
+      </select>
+
+      <!-- ================== Medical Sub-Department ================== -->
+      <div id="medical-sub-department" style="display: none;">
+        <label for="medical-department">Medical Sub-Department:</label>
+        <!-- Notice: no name attribute, only an ID. We'll pick this up in JS only if selected. -->
+        <select id="medical-department">
+          <option value="ED">Emergency Department (ED)</option>
+          <option value="OPD">Outpatient Department (OPD)</option>
+          <option value="Inpatient">Inpatient Department</option>
+          <option value="Surgery">Surgery (Operating Theatres)</option>
+          <option value="ICU">Intensive Care Unit (ICU)</option>
+          <option value="Pediatrics">Pediatrics</option>
+          <option value="OB-GYN">Obstetrics and Gynecology (OB-GYN)</option>
+          <option value="Cardiology">Cardiology</option>
+          <option value="Oncology">Oncology</option>
+          <option value="Orthopedics">Orthopedics</option>
+          <option value="Neurology">Neurology</option>
+          <option value="Psychiatry">Psychiatry and Mental Health</option>
+          <option value="Dermatology">Dermatology</option>
+          <option value="Radiology">Radiology and Imaging</option>
+          <option value="Pathology">Pathology</option>
+        </select>
+      </div>
+
+      <!-- ================== Administrative Sub-Department ================== -->
+      <div id="admin-sub-department" style="display: none;">
+        <label for="admin-department">Administrative Sub-Department:</label>
+        <select id="admin-department">
+          <option value="Admissions">Admissions and Registration</option>
+          <option value="Billing">Billing and Finance</option>
+          <option value="HR">Human Resources (HR)</option>
+          <option value="MedicalRecords">Medical Records/Health Information Management</option>
+          <option value="QualityAssurance">Quality Assurance</option>
+          <option value="PublicRelations">Public Relations/Marketing</option>
+        </select>
+      </div>
+
+      <!-- ================== Support Sub-Department ================== -->
+      <div id="support-sub-department" style="display: none;">
+        <label for="support-department">Support/Ancillary Sub-Department:</label>
+        <select id="support-department">
+          <option value="Pharmacy">Pharmacy</option>
+          <option value="Laboratory">Laboratory Services</option>
+          <option value="Biomedical">Biomedical Engineering</option>
+          <option value="Housekeeping">Housekeeping/Environmental Services</option>
+          <option value="Catering">Catering and Nutrition</option>
+          <option value="Security">Security</option>
+          <option value="IT">IT/Technology</option>
+          <option value="Transport">Transport Services</option>
+        </select>
+      </div>
+
+      <!-- ================== Issue Description ================== -->
+      <label for="issue">Describe the Issue:</label>
+      <textarea id="issue" name="issue" rows="4" required></textarea>
+
+      <!-- ================== Priority Level (with symbols) ================== -->
+      <label class="priority">Priority Level:</label>
+      <input type="radio" id="low" name="priority" value="Low" required />
+      <label for="low">🟢 Low — Minor or no immediate impact</label><br/>
+
+      <input type="radio" id="medium" name="priority" value="Medium"/>
+      <label for="medium">🟡 Medium — Manageable disruption</label><br/>
+
+      <input type="radio" id="high" name="priority" value="High"/>
+      <label for="high">🟠 High — Significant urgency</label><br/>
+
+      <input type="radio" id="critical" name="priority" value="Critical"/>
+      <label for="critical">🔴 Critical — Immediate attention required</label><br/>
+
+      <!-- ================== Submit Button ================== -->
+      <button type="submit">Submit Ticket</button>
+    </form>
+  </div>
+
+  <script>
+    // ============================================================
+    // On page load, log all stored tickets (if any) from localStorage
+    // ============================================================
+    window.addEventListener('load', function () {
+      console.log("=== Local Storage Data on Page Load ===");
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('ticket-')) {
+          console.log(`Key: ${key}`, JSON.parse(localStorage.getItem(key)));
+        }
+      });
+    });
+
+    // ============================================================
+    // Dynamically show/hide sub-departments based on main selection
+    // ============================================================
+    function showSubDepartments() {
+      const department = document.getElementById("department").value;
+      const medicalSub = document.getElementById("medical-sub-department");
+      const adminSub   = document.getElementById("admin-sub-department");
+      const supportSub = document.getElementById("support-sub-department");
+
+      // Display only the sub-department section relevant to user’s choice
+      medicalSub.style.display = (department === "Medical")        ? "block" : "none";
+      adminSub.style.display   = (department === "Administrative") ? "block" : "none";
+      supportSub.style.display = (department === "Support")        ? "block" : "none";
+    }
+
+    // ============================================================
+    // Form submission handler for the Trouble Ticket
+    // ============================================================
+    const ticketForm = document.getElementById('ticketForm');
+    ticketForm.addEventListener('submit', function (event) {
+      // Prevent default behavior (page refresh / server submit)
+      event.preventDefault();
+      event.stopPropagation();
+
+      // Basic validation
+      if (!ticketForm.checkValidity()) {
+        alert("Please fill out all required fields before submitting.");
+        return;
+      }
+
+      // Collect the data we care about from the form
+      const department = document.getElementById("department").value;
+      let subDepartmentValue = "";
+
+      if (department === "Medical") {
+        subDepartmentValue = document.getElementById("medical-department").value;
+      } else if (department === "Administrative") {
+        subDepartmentValue = document.getElementById("admin-department").value;
+      } else if (department === "Support") {
+        subDepartmentValue = document.getElementById("support-department").value;
+      }
+
+      // Build our JSON object with only the values selected
+      const jsonObject = {
+        department: department,
+        subDepartment: subDepartmentValue,
+        issue: document.getElementById("issue").value,
+        priority: ticketForm.querySelector('input[name="priority"]:checked').value
+      };
+
+      // Create a unique key for each ticket
+      const ticketKey = `ticket-${Date.now()}`;
+      localStorage.setItem(ticketKey, JSON.stringify(jsonObject));
+
+      // Log the newly saved ticket
+      console.log("=== New Ticket Saved ===");
+      console.log(jsonObject);
+
+      // Log all current tickets
+      console.log("=== All Stored Tickets ===");
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('ticket-')) {
+          console.log(`${key}:`, JSON.parse(localStorage.getItem(key)));
+        }
+      });
+
+      // Provide user feedback and reset the form
+      alert('✅ Ticket has been successfully saved locally.');
+      ticketForm.reset();
+    });
+  </script>
+</body>
+</html>

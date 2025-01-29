@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unified IT Ticket System with Dashboard</title>
+
+  <!-- Bootstrap & FontAwesome -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Inline Styles for Main Page and All Tabs -->
+  
+</head>
+
+<body>
+  <!-- Offcanvas Menu for Tabs -->
+  <div
+    class="offcanvas offcanvas-end"
+    tabindex="-1"
+    id="offcanvasTabs"
+    aria-labelledby="offcanvasTabsLabel"
+  >
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasTabsLabel">Navigation</h5>
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <button
+            class="nav-link active"
+            id="ticket-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#ticket"
+            type="button"
+            role="tab"
+            aria-controls="ticket"
+            aria-selected="true"
+          >
+            Submit Ticket
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            id="admin-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#admin"
+            type="button"
+            role="tab"
+            aria-controls="admin"
+            aria-selected="false"
+          >
+            Admin Login
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            id="hospital-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#hospital"
+            type="button"
+            role="tab"
+            aria-controls="hospital"
+            aria-selected="false"
+          >
+            Hospital Trouble Ticket
+          </button>
+        </li>
+        <!-- ========== New Tab for the Ticket Dashboard ========== -->
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            id="dashboard-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#dashboard"
+            type="button"
+            role="tab"
+            aria-controls="dashboard"
+            aria-selected="false"
+          >
+            Ticket Dashboard
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Hamburger Button to Trigger Offcanvas -->
+  <button
+    class="hamburger-btn"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasTabs"
+    aria-controls="offcanvasTabs"
+  >
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div class="main-container">
+    <header>
+     
+    </header>
+
+    <!-- ========== Tabs Container ========== -->
+    <section class="tab-content" id="myTabContent">
+      <!-- ========== 1) Standard Submit Ticket Tab ========== -->
+      <article
+        class="tab-pane fade show active"
+        id="ticket"
+        role="tabpanel"
+        aria-labelledby="ticket-tab"
+      >
+        <header class="card-header bg-primary text-white text-center">
+          <h2>Submit an IT Ticket</h2>
+        </header>
+        <div class="card-body bg-light text-dark">
+          <form id="ticketForm" class="needs-validation" novalidate>
+            <fieldset>
+              <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                  placeholder="Enter your name"
+                  required
+                />
+                <div class="invalid-feedback">Please enter your name.</div>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                />
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+              </div>
+              <div class="mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phone"
+                  name="phone"
+                  placeholder="Enter your phone number"
+                  required
+                />
+                <div class="invalid-feedback">Please enter your phone number.</div>
+              </div>
+              <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  name="address"
+                  placeholder="Enter your address"
+                  required
+                />
+                <div class="invalid-feedback">Please enter your address.</div>
+              </div>
+              <div class="mb-3">
+                <label for="text" class="form-label">Issue Description</label>
+                <textarea
+                  class="form-control"
+                  id="text"
+                  name="text"
+                  rows="4"
+                  placeholder="Describe your issue"
+                  required
+                ></textarea>
+                <div class="invalid-feedback">Please describe your issue.</div>
+              </div>
+              <div class="mb-3">
+                <label for="screenshot" class="form-label"
+                  >Upload Screenshot (optional)</label
+                >
+                <input
+                  type="file"
+                  class="form-control"
+                  id="screenshot"
+                  name="screenshot"
+                  accept="image/*"
+                />
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit Ticket</button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </article>
+
+      <!-- ========== 2) Admin Login Tab ========== -->
+      <article
+        class="tab-pane fade"
+        id="admin"
+        role="tabpanel"
+        aria-labelledby="admin-tab"
+      >
+        <header class="card-header bg-secondary text-white text-center">
+          <h2>Admin Login</h2>
+        </header>
+        <div class="card-body bg-light text-dark">
+          <form id="adminLoginForm" class="needs-validation" novalidate>
+            <fieldset>
+              <div class="mb-3">
+                <label for="adminUsername" class="form-label">Username</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="adminUsername"
+                  name="adminUsername"
+                  placeholder="Enter your username"
+                  required
+                />
+                <div class="invalid-feedback">Please enter your username.</div>
+              </div>
+              <div class="mb-3">
+                <label for="adminPassword" class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="adminPassword"
+                  name="adminPassword"
+                  placeholder="Enter your password"
+                  required
+                />
+                <div class="invalid-feedback">Please enter your password.</div>
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-secondary">Login</button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </article>
+
+      <!-- ========== 3) Hospital Trouble Ticket Tab ========== -->
+      <article
+        class="tab-pane fade"
+        id="hospital"
+        role="tabpanel"
+        aria-labelledby="hospital-tab"
+      >
+        <header class="card-header bg-success text-white text-center">
+          <h2>Hospital Trouble Ticket</h2>
+        </header>
+        <div class="hospital-ticket-container">
+          <div class="hospital-ticket-inner">
+            <form
+              id="hospitalTicketForm"
+              action="submit_ticket.php"
+              method="post"
+              novalidate
+            >
+              <!-- Department -->
+              <label for="hospitalDepartment">Department:</label>
+              <select
+                id="hospitalDepartment"
+                name="hospitalDepartment"
+                required
+                onchange="showHospitalSubDepartments()"
+              >
+                <option value="" disabled selected>Select a department category</option>
+                <option value="Medical">Medical Departments</option>
+                <option value="Administrative">Administrative Departments</option>
+                <option value="Support">Support/Ancillary Departments</option>
+              </select>
+
+              <!-- Medical Sub-Department -->
+              <div id="hospitalMedicalSub" style="display: none;">
+                <label for="hospitalMedicalDepartment">Medical Sub-Department:</label>
+                <select id="hospitalMedicalDepartment">
+                  <option value="ED">Emergency Department (ED)</option>
+                  <option value="OPD">Outpatient Department (OPD)</option>
+                  <option value="Inpatient">Inpatient Department</option>
+                  <option value="Surgery">Surgery (Operating Theatres)</option>
+                  <option value="ICU">Intensive Care Unit (ICU)</option>
+                  <option value="Pediatrics">Pediatrics</option>
+                  <option value="OB-GYN">Obstetrics and Gynecology (OB-GYN)</option>
+                  <option value="Cardiology">Cardiology</option>
+                  <option value="Oncology">Oncology</option>
+                  <option value="Orthopedics">Orthopedics</option>
+                  <option value="Neurology">Neurology</option>
+                  <option value="Psychiatry">Psychiatry and Mental Health</option>
+                  <option value="Dermatology">Dermatology</option>
+                  <option value="Radiology">Radiology and Imaging</option>
+                  <option value="Pathology">Pathology</option>
+                </select>
+              </div>
+
+              <!-- Administrative Sub-Department -->
+              <div id="hospitalAdminSub" style="display: none;">
+                <label for="hospitalAdminDepartment"
+                  >Administrative Sub-Department:</label
+                >
+                <select id="hospitalAdminDepartment">
+                  <option value="Admissions">Admissions and Registration</option>
+                  <option value="Billing">Billing and Finance</option>
+                  <option value="HR">Human Resources (HR)</option>
+                  <option value="MedicalRecords">Medical Records/Health Info</option>
+                  <option value="QualityAssurance">Quality Assurance</option>
+                  <option value="PublicRelations">Public Relations/Marketing</option>
+                </select>
+              </div>
+
+              <!-- Support Sub-Department -->
+              <div id="hospitalSupportSub" style="display: none;">
+                <label for="hospitalSupportDepartment"
+                  >Support/Ancillary Sub-Department:</label
+                >
+                <select id="hospitalSupportDepartment">
+                  <option value="Pharmacy">Pharmacy</option>
+                  <option value="Laboratory">Laboratory Services</option>
+                  <option value="Biomedical">Biomedical Engineering</option>
+                  <option value="Housekeeping">Housekeeping</option>
+                  <option value="Catering">Catering and Nutrition</option>
+                  <option value="Security">Security</option>
+                  <option value="IT">IT/Technology</option>
+                  <option value="Transport">Transport Services</option>
+                </select>
+              </div>
+
+              <!-- Issue Description -->
+              <label for="hospitalIssue">Describe the Issue:</label>
+              <textarea
+                id="hospitalIssue"
+                name="hospitalIssue"
+                rows="4"
+                required
+              ></textarea>
+
+              <!-- Priority Level -->
+              <label class="priority">Priority Level:</label>
+              <input
+                type="radio"
+                id="hospitalLow"
+                name="hospitalPriority"
+                value="Low"
+                required
+              />
+              <label for="hospitalLow">🟢 Low — Minor or no immediate impact</label><br />
+
+              <input
+                type="radio"
+                id="hospitalMedium"
+                name="hospitalPriority"
+                value="Medium"
+              />
+              <label for="hospitalMedium"
+                >🟡 Medium — Manageable disruption</label
+              ><br />
+
+              <input
+                type="radio"
+                id="hospitalHigh"
+                name="hospitalPriority"
+                value="High"
+              />
+              <label for="hospitalHigh">🟠 High — Significant urgency</label><br />
+
+              <input
+                type="radio"
+                id="hospitalCritical"
+                name="hospitalPriority"
+                value="Critical"
+              />
+              <label for="hospitalCritical"
+                >🔴 Critical — Immediate attention required</label
+              ><br />
+
+              <!-- Submit Button -->
+              <button type="submit">Submit Ticket</button>
+            </form>
+          </div>
+        </div>
+      </article>
+
+      <!-- ========== 4) Ticket Dashboard Tab ========== -->
+      <article
+        class="tab-pane fade"
+        id="dashboard"
+        role="tabpanel"
+        aria-labelledby="dashboard-tab"
+      >
+        <div class="dashboard-container">
+          <h1>Hospital IT Ticket Dashboard</h1>
+          <div class="card-container" id="cardContainer">
+            <!-- Ticket cards injected by JavaScript -->
+          </div>
+          <button class="clear-btn" onclick="clearAllTickets()">Clear All Tickets</button>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <!-- Bootstrap JS (Bundle) -->
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+  ></script>
+
+ <script src="scripts.js"></script>
+</body>
+</html>

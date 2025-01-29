@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unified IT Ticket System with Dashboard</title>
+
+  <!-- Bootstrap & FontAwesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: Arial, sans-serif;
+    }
+    .dashboard-container {
+      max-width: 1200px;
+      margin: auto;
+    }
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-gap: 20px;
+    }
+    .ticket-card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .ticket-card h2 {
+      font-size: 1rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .ticket-field {
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+    .ticket-actions {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .priority-indicator {
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+    .priority-Low { background-color: #28a745; color: white; }
+    .priority-Medium { background-color: #ffc107; color: black; }
+    .priority-High { background-color: #fd7e14; color: white; }
+    .priority-Critical { background-color: #dc3545; color: white; }
+    .empty-message {
+      text-align: center;
+      font-weight: bold;
+      color: #555;
+      grid-column: 1 / -1;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <h1 class="text-center">Hospital IT Ticket Dashboard</h1>
+    <div class="card-container" id="cardContainer"></div>
+    <button class="clear-btn btn btn-secondary d-block mx-auto mt-3" onclick="clearAllTickets()">Clear All Tickets</button>
+  </div>
+
+  <script>
+    function loadTickets() {
+      const cardContainer = document.getElementById("cardContainer");
+      cardContainer.innerHTML = "";
+      const allKeys = Object.keys(localStorage).filter(key => key.startsWith("ticket-"));
+      
+      if (allKeys.length === 0) {
+        cardContainer.innerHTML = '<p class="empty-message">No tickets found in local storage.</p>';
+        return;
+      }
+      
+      allKeys.forEach((key) => {
+        const ticketData = JSON.parse(localStorage.getItem(key)) || {};
+        
+        const cardDiv = document.createElement("div");
+        cardDiv.classList.add("ticket-card");
+        
+        const priorityClass = ticketData.priority ? `priority-${ticketData.priority}` : "priority-Low";
+        
+        cardDiv.innerHTML = `
+          ${ticketData.screenshot ? `<img src="${ticketData.screenshot}" class="img-fluid mb-2" alt="Attached Screenshot">` : ""}
+          <h2>Ticket ID: ${key}</h2>
+          <div class="ticket-field"><strong>Department:</strong> ${ticketData.department || "N/A"}</div>
+          <div class="ticket-field"><strong>Sub-Department:</strong> ${ticketData.subDepartment || "N/A"}</div>
+          <div class="ticket-field"><strong>Issue:</strong> ${ticketData.issue || "N/A"}</div>
+          <div class="ticket-field"><strong>Priority:</strong> <span class="priority-indicator ${priorityClass}">${ticketData.priority || "N/A"}</span></div>
+          ${ticketData.name ? `<div class="ticket-field"><strong>Name:</strong> ${ticketData.name}</div>` : ""}
+          ${ticketData.email ? `<div class="ticket-field"><strong>Email:</strong> ${ticketData.email}</div>` : ""}
+          ${ticketData.phone ? `<div class="ticket-field"><strong>Phone:</strong> ${ticketData.phone}</div>` : ""}
+          ${ticketData.address ? `<div class="ticket-field"><strong>Address:</strong> ${ticketData.address}</div>` : ""}
+          
+          <div class="ticket-actions">
+            <label for="prioritySelect-${key}"><strong>Change Priority:</strong></label>
+            <select id="prioritySelect-${key}" class="form-control">
+              <option value="Low" ${ticketData.priority === "Low" ? "selected" : ""}>Low</option>
+              <option value="Medium" ${ticketData.priority === "Medium" ? "selected" : ""}>Medium</option>
+              <option value="High" ${ticketData.priority === "High" ? "selected" : ""}>High</option>
+              <option value="Critical" ${ticketData.priority === "Critical" ? "selected" : ""}>Critical</option>
+            </select>
+            <button class="save-btn btn btn-primary mt-2" onclick="saveNewPriority('${key}')">Save Priority</button>
+            <button class="delete-btn btn btn-danger mt-2" onclick="deleteTicket('${key}')">Delete Ticket</button>
+          </div>
+        `;
+        cardContainer.appendChild(cardDiv);
+      });
+    }
+    function saveNewPriority(key) {
+      const selectEl = document.getElementById(`prioritySelect-${key}`);
+      const newPriority = selectEl.value;
+      const ticketData = JSON.parse(localStorage.getItem(key)) || {};
+      ticketData.priority = newPriority;
+      localStorage.setItem(key, JSON.stringify(ticketData));
+      loadTickets();
+    }
+    window.addEventListener("load", loadTickets);
+  </script>
+</body>
+</html>
