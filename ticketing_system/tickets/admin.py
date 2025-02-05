@@ -1,8 +1,6 @@
-# tickets/admin.py
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.utils.safestring import mark_safe
-from django.contrib.contenttypes.admin import GenericTabularInline
 from .models import Department, HospitalTicket, ITTicket, TicketAttachment
 
 # -----------------------------------------------------------------------------
@@ -27,30 +25,31 @@ def generate_thumbnail(attachment):
         )
     return ""
 
-def generate_all_thumbnails(ticket, model_name):
+def generate_all_thumbnails(it_ticket):
     """
-    Retrieve all attachments for a given ticket (filtered by content_type model name)
-    and return a concatenated HTML snippet of their thumbnails.
+    Retrieve all attachments for a given ITTicket and return a concatenated
+    HTML snippet of their thumbnails.
     """
-    attachments = TicketAttachment.objects.filter(content_type__model=model_name, object_id=ticket.pk)
+    attachments = it_ticket.attachments.all()
     if attachments.exists():
         html = "".join([generate_thumbnail(att) for att in attachments])
         return mark_safe(html)
     return "No Attachment"
 
+
 # -----------------------------------------------------------------------------
-# Inline for TicketAttachment (for attaching files to tickets)
+# Inline for TicketAttachment (for attaching files to IT tickets)
 # -----------------------------------------------------------------------------
-class TicketAttachmentInline(GenericTabularInline):
+class TicketAttachmentInline(admin.TabularInline):
     model = TicketAttachment
     extra = 1
     readonly_fields = ('file_thumbnail',)
-    # Remove 'uploaded_at' since it's non-editable; it can be shown in the list view if desired.
     fields = ('file', 'file_thumbnail')
-    
+
     def file_thumbnail(self, obj):
         return generate_thumbnail(obj)
     file_thumbnail.short_description = "Thumbnail Preview"
+
 
 # -----------------------------------------------------------------------------
 # Department Admin
@@ -61,15 +60,13 @@ class DepartmentAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     view_on_site = False
 
+
 # -----------------------------------------------------------------------------
 # HospitalTicket Admin
 # -----------------------------------------------------------------------------
 @admin.register(HospitalTicket)
 class HospitalTicketAdmin(admin.ModelAdmin):
-    list_display = (
-        'id', 'title', 'patient_name', 'primary_department', 'sub_department',
-        'priority', 'created_at', 'attachment_thumbnails'
-    )
+    list_display = ('id', 'title', 'patient_name', 'primary_department', 'sub_department', 'priority', 'created_at')
     list_filter = ('primary_department', 'sub_department', 'priority', 'created_at')
     search_fields = ('title', 'patient_name', 'description')
     ordering = ('-created_at',)
@@ -81,10 +78,6 @@ class HospitalTicketAdmin(admin.ModelAdmin):
     )
     view_on_site = False
 
-    def attachment_thumbnails(self, obj):
-        # Use the helper to generate thumbnails for all attachments of a HospitalTicket.
-        return generate_all_thumbnails(obj, 'hospitalticket')
-    attachment_thumbnails.short_description = "Attachment Thumbnails"
 
 # -----------------------------------------------------------------------------
 # ITTicket Admin
@@ -105,20 +98,21 @@ class ITTicketAdmin(admin.ModelAdmin):
     view_on_site = False
 
     def attachment_thumbnails(self, obj):
-        # Use the helper to generate thumbnails for all attachments of an ITTicket.
-        return generate_all_thumbnails(obj, 'itticket')
+        # Generate thumbnails for all attachments linked to the ITTicket.
+        return generate_all_thumbnails(obj)
     attachment_thumbnails.short_description = "Attachment Thumbnails"
 
     def response_add(self, request, obj, post_url_continue=None):
         # After adding an ITTicket, redirect back to the change list.
         return HttpResponseRedirect("../")
 
+
 # -----------------------------------------------------------------------------
 # TicketAttachment Admin
 # -----------------------------------------------------------------------------
 @admin.register(TicketAttachment)
 class TicketAttachmentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'file_preview', 'uploaded_at', 'ticket')
+    list_display = ('id', 'file_preview', 'uploaded_at', 'it_ticket')
     list_filter = ('uploaded_at',)
     search_fields = ('file',)
     readonly_fields = ('file_preview',)
@@ -127,6 +121,7 @@ class TicketAttachmentAdmin(admin.ModelAdmin):
     def file_preview(self, obj):
         return generate_thumbnail(obj) or "No Attachment"
     file_preview.short_description = "File Preview"
+
 
 # -----------------------------------------------------------------------------
 # Admin Site Customization

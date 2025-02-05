@@ -1,10 +1,4 @@
 from django.db import models
-
-# Create your models here.
-# tickets/models.py
-from django.db import models
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 
@@ -29,6 +23,7 @@ class Department(models.Model):
     def __str__(self):
         return f"{self.parent.name} > {self.name}" if self.parent else self.name
 
+
 # -----------------------------------------------------------------------------
 # Priority Level Choices
 # -----------------------------------------------------------------------------
@@ -38,6 +33,7 @@ PRIORITY_LEVEL_CHOICES = [
     ('High', 'High — Significant urgency'),
     ('Critical', 'Critical — Immediate attention required'),
 ]
+
 
 # -----------------------------------------------------------------------------
 # HospitalTicket Model with Department and Sub-Department Fields
@@ -77,6 +73,7 @@ class HospitalTicket(models.Model):
 
     def clean(self):
         super().clean()
+        # Enforce hierarchical integrity between primary and sub-department.
         if self.sub_department:
             if not self.primary_department:
                 raise ValidationError("A primary department must be selected if a sub-department is provided.")
@@ -84,11 +81,12 @@ class HospitalTicket(models.Model):
                 raise ValidationError("The sub-department must be a child of the selected primary department.")
 
     def get_absolute_url(self):
-        # If you wish to enable a public “view on site” link, define a corresponding URL.
+        # Enables a public “view on site” link.
         return reverse('hospital-ticket-detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return f"HospitalTicket: {self.title}"
+
 
 # -----------------------------------------------------------------------------
 # ITTicket Model (Standard IT Tickets)
@@ -100,6 +98,8 @@ class ITTicket(models.Model):
     issue_category = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    # Optionally store a screenshot as a quick preview of the ticket.
+    screenshot = models.ImageField(upload_to='attachments/', blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse('it-ticket-detail', kwargs={'pk': self.pk})
@@ -107,18 +107,19 @@ class ITTicket(models.Model):
     def __str__(self):
         return f"ITTicket: {self.title}"
 
+
 # -----------------------------------------------------------------------------
-# TicketAttachment Model (For File and Image Previews)
+# TicketAttachment Model (For File URL Generation)
 # -----------------------------------------------------------------------------
 class TicketAttachment(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    ticket = GenericForeignKey('content_type', 'object_id')
+    # Directly associate the attachment with an ITTicket.
+    it_ticket = models.ForeignKey(ITTicket, on_delete=models.CASCADE, related_name='attachments')
+    # File attachment field for generating a URL for the uploaded file.
     file = models.FileField(upload_to='attachments/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Attachment: {self.file.name}"
+        return f"Attachment for ITTicket {self.it_ticket.id}: {self.file.name}"
 
 
 """
@@ -167,4 +168,5 @@ Sub-Departments:
     - Transport
 
 Populate these records via the admin interface or fixtures.
+--------------------------------------------------------------------------------
 """
