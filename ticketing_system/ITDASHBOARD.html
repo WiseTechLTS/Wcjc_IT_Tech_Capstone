@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unified IT Ticket System with Dashboard</title>
+
+  <!-- Bootstrap & FontAwesome -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+
+  <!-- Combined Inline Styles -->
+  <style>
+    /* ========== Common Base Styles ========== */
+    body {
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    .main-container {
+      padding: 20px;
+    }
+    .hamburger-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: transparent;
+      border: none;
+      color: #000;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 9999;
+    }
+    header h1 {
+      margin-top: 40px;
+    }
+    /* ========== Standard Form & Tab Styles ========== */
+    .needs-validation {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .hospital-ticket-container {
+      font-family: Arial, sans-serif;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f4f4f4;
+      max-width: 600px;
+      border-radius: 8px;
+      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+    }
+    .hospital-ticket-inner label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+    .hospital-ticket-inner input,
+    .hospital-ticket-inner select,
+    .hospital-ticket-inner textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .hospital-ticket-inner .priority {
+      margin-top: 10px;
+    }
+    .hospital-ticket-inner button {
+      background-color: #28a745;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    .hospital-ticket-inner button:hover {
+      background-color: #218838;
+    }
+    /* ========== Dashboard & Offcanvas Styles ========== */
+    .dashboard-container {
+      margin: 0 auto;
+      max-width: 1200px;
+    }
+    .dashboard-container h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    /* ----- Local Ticket Dashboard (Grid) ----- */
+    .local-card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .ticket-card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .ticket-card h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      color: #333;
+    }
+    .ticket-field {
+      margin-bottom: 8px;
+    }
+    .ticket-field label {
+      font-weight: bold;
+    }
+    .ticket-actions {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ticket-actions select {
+      width: 100%;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button.save-btn {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 8px 12px;
+      width: fit-content;
+    }
+    button.save-btn:hover {
+      background-color: #0069d9;
+    }
+    button.delete-btn {
+      background-color: #dc3545;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 8px 12px;
+      width: fit-content;
+    }
+    button.delete-btn:hover {
+      background-color: #c82333;
+    }
+    .empty-message {
+      text-align: center;
+      font-weight: bold;
+      color: #555;
+      grid-column: 1 / -1;
+    }
+    .clear-btn {
+      display: block;
+      margin: 20px auto 0;
+      padding: 10px 15px;
+      background-color: #6c757d;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .clear-btn:hover {
+      background-color: #5a6268;
+    }
+    /* ========== Database Ticket Display Style (from Ticket Data Overview) ========== */
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .ticket {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 350px;
+      margin: 0.5rem;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .ticket h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+    .responsive-table {
+      overflow-x: auto;
+      margin-top: 0.5rem;
+    }
+    .ticket table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .ticket th,
+    .ticket td {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    .ticket th {
+      background-color: #f2f2f2;
+      width: 40%;
+    }
+    .screenshot-img,
+    .file-img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+    }
+    .file-display {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    .error {
+      color: red;
+    }
+    /* Offcanvas navigation styling */
+    .offcanvas {
+      width: 250px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Offcanvas Menu for Tabs -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasTabs" aria-labelledby="offcanvasTabsLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasTabsLabel">Navigation</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <button class="nav-link active" id="ticket-tab" data-bs-toggle="tab" data-bs-target="#ticket" type="button" role="tab" aria-controls="ticket" aria-selected="true">
+            Submit Ticket
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="admin-tab" data-bs-toggle="tab" data-bs-target="#admin" type="button" role="tab" aria-controls="admin" aria-selected="false">
+            Admin Login
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="hospital-tab" data-bs-toggle="tab" data-bs-target="#hospital" type="button" role="tab" aria-controls="hospital" aria-selected="false">
+            Hospital Trouble Ticket
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">
+            Ticket Dashboard
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Hamburger Button to Trigger Offcanvas -->
+  <button class="hamburger-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTabs" aria-controls="offcanvasTabs">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div class="main-container">
+    <header class="mb-4 text-center">
+      <h1>Unified IT Ticket System</h1>
+    </header>
+
+    <!-- Tabs Container -->
+    <section class="tab-content" id="myTabContent">
+      <!-- 1) Standard Submit Ticket Tab -->
+      <article class="tab-pane fade show active" id="ticket" role="tabpanel" aria-labelledby="ticket-tab">
+        <div class="card mb-3">
+          <header class="card-header bg-primary text-white text-center">
+            <h2>Submit an IT Ticket</h2>
+          </header>
+          <div class="card-body bg-light text-dark">
+            <form id="ticketForm" class="needs-validation" novalidate>
+              <fieldset>
+                <div class="mb-3">
+                  <label for="name" class="form-label">Name</label>
+                  <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required />
+                  <div class="invalid-feedback">Please enter your name.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required />
+                  <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="phone" class="form-label">Phone</label>
+                  <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required />
+                  <div class="invalid-feedback">Please enter your phone number.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="address" class="form-label">Address</label>
+                  <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address" required />
+                  <div class="invalid-feedback">Please enter your address.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="text" class="form-label">Issue Description</label>
+                  <textarea class="form-control" id="text" name="text" rows="4" placeholder="Describe your issue" required></textarea>
+                  <div class="invalid-feedback">Please describe your issue.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="screenshot" class="form-label">Upload Screenshot (optional)</label>
+                  <input type="file" class="form-control" id="screenshot" name="screenshot" accept="image/*" />
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary">Submit Ticket</button>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </article>
+
+      <!-- 2) Admin Login Tab -->
+      <article class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="admin-tab">
+        <div class="card mb-3">
+          <header class="card-header bg-secondary text-white text-center">
+            <h2>Admin Login</h2>
+          </header>
+          <div class="card-body bg-light text-dark">
+            <form id="adminLoginForm" class="needs-validation" novalidate>
+              <fieldset>
+                <div class="mb-3">
+                  <label for="adminUsername" class="form-label">Username</label>
+                  <input type="text" class="form-control" id="adminUsername" name="adminUsername" placeholder="Enter your username" required />
+                  <div class="invalid-feedback">Please enter your username.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="adminPassword" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="adminPassword" name="adminPassword" placeholder="Enter your password" required />
+                  <div class="invalid-feedback">Please enter your password.</div>
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-secondary">Login</button>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </article>
+
+      <!-- 3) Hospital Trouble Ticket Tab -->
+      <article class="tab-pane fade" id="hospital" role="tabpanel" aria-labelledby="hospital-tab">
+        <div class="card mb-3">
+          <header class="card-header bg-success text-white text-center">
+            <h2>Hospital Trouble Ticket</h2>
+          </header>
+          <div class="hospital-ticket-container">
+            <div class="hospital-ticket-inner">
+              <form id="hospitalTicketForm" novalidate>
+                <!-- Department -->
+                <label for="hospitalDepartment">Department:</label>
+                <select id="hospitalDepartment" name="hospitalDepartment" required onchange="showHospitalSubDepartments()">
+                  <option value="" disabled selected>Select a department category</option>
+                  <option value="Medical">Medical Departments</option>
+                  <option value="Administrative">Administrative Departments</option>
+                  <option value="Support">Support/Ancillary Departments</option>
+                </select>
+
+                <!-- Medical Sub-Department -->
+                <div id="hospitalMedicalSub" style="display: none;">
+                  <label for="hospitalMedicalDepartment">Medical Sub-Department:</label>
+                  <select id="hospitalMedicalDepartment">
+                    <option value="ED">Emergency Department (ED)</option>
+                    <option value="OPD">Outpatient Department (OPD)</option>
+                    <option value="Inpatient">Inpatient Department</option>
+                    <option value="Surgery">Surgery (Operating Theatres)</option>
+                    <option value="ICU">Intensive Care Unit (ICU)</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                    <option value="OB-GYN">Obstetrics and Gynecology (OB-GYN)</option>
+                    <option value="Cardiology">Cardiology</option>
+                    <option value="Oncology">Oncology</option>
+                    <option value="Orthopedics">Orthopedics</option>
+                    <option value="Neurology">Neurology</option>
+                    <option value="Psychiatry">Psychiatry and Mental Health</option>
+                    <option value="Dermatology">Dermatology</option>
+                    <option value="Radiology">Radiology and Imaging</option>
+                    <option value="Pathology">Pathology</option>
+                  </select>
+                </div>
+
+                <!-- Administrative Sub-Department -->
+                <div id="hospitalAdminSub" style="display: none;">
+                  <label for="hospitalAdminDepartment">Administrative Sub-Department:</label>
+                  <select id="hospitalAdminDepartment">
+                    <option value="Admissions">Admissions and Registration</option>
+                    <option value="Billing">Billing and Finance</option>
+                    <option value="HR">Human Resources (HR)</option>
+                    <option value="MedicalRecords">Medical Records/Health Info</option>
+                    <option value="QualityAssurance">Quality Assurance</option>
+                    <option value="PublicRelations">Public Relations/Marketing</option>
+                  </select>
+                </div>
+
+                <!-- Support Sub-Department -->
+                <div id="hospitalSupportSub" style="display: none;">
+                  <label for="hospitalSupportDepartment">Support/Ancillary Sub-Department:</label>
+                  <select id="hospitalSupportDepartment">
+                    <option value="Pharmacy">Pharmacy</option>
+                    <option value="Laboratory">Laboratory Services</option>
+                    <option value="Biomedical">Biomedical Engineering</option>
+                    <option value="Housekeeping">Housekeeping</option>
+                    <option value="Catering">Catering and Nutrition</option>
+                    <option value="Security">Security</option>
+                    <option value="IT">IT/Technology</option>
+                    <option value="Transport">Transport Services</option>
+                  </select>
+                </div>
+
+                <!-- Issue Description -->
+                <label for="hospitalIssue">Describe the Issue:</label>
+                <textarea id="hospitalIssue" name="hospitalIssue" rows="4" required></textarea>
+
+                <!-- Priority Level -->
+                <label class="priority">Priority Level:</label>
+                <input type="radio" id="hospitalLow" name="hospitalPriority" value="Low" required />
+                <label for="hospitalLow">🟢 Low — Minor or no immediate impact</label><br />
+
+                <input type="radio" id="hospitalMedium" name="hospitalPriority" value="Medium" />
+                <label for="hospitalMedium">🟡 Medium — Manageable disruption</label><br />
+
+                <input type="radio" id="hospitalHigh" name="hospitalPriority" value="High" />
+                <label for="hospitalHigh">🟠 High — Significant urgency</label><br />
+
+                <input type="radio" id="hospitalCritical" name="hospitalPriority" value="Critical" />
+                <label for="hospitalCritical">🔴 Critical — Immediate attention required</label><br />
+
+                <!-- Submit Button -->
+                <button type="submit">Submit Ticket</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4) Ticket Dashboard Tab -->
+      <article class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+        <div class="dashboard-container">
+          <h1>Ticket Dashboard</h1>
+          <!-- Section for Database Tickets (using the overview style) -->
+          <h2 class="text-center">Database Tickets</h2>
+          <div id="tickets-container" aria-live="polite">
+            <p>Loading database ticket data…</p>
+          </div>
+          <!-- Section for Local Tickets (grid view) -->
+          <h2 class="mt-5 text-center">Local Tickets</h2>
+          <div class="local-card-container" id="cardContainer">
+            <!-- Local ticket cards injected by JavaScript -->
+          </div>
+          <button class="clear-btn" onclick="clearAllTickets()">Clear All Local Tickets</button>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <!-- Bootstrap Bundle JS -->
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ========== Scripts for Form Handling, Local Tickets, and Dashboard Display ========== -->
+  <script>
+    // API Endpoints (adjust these URLs as needed)
+    const IT_TICKETS_ENDPOINT = 'http://127.0.0.1:8000/api/it-tickets/';
+    const HOSPITAL_TICKETS_ENDPOINT = 'http://127.0.0.1:8000/api/hospital-tickets/';
+    const DATABASE_TICKETS_ENDPOINT = 'http://127.0.0.1:8000/api/tickets/';
+
+    /* -------------------------------
+       1) IT Ticket Form Submission
+    ------------------------------- */
+    document.getElementById("ticketForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const form = event.target;
+      if (!form.checkValidity()) {
+        form.classList.add("was-validated");
+        return;
+      }
+      // Build ticket object for localStorage
+      const ticketData = {
+        department: "IT (User Submission)",
+        subDepartment: "N/A",
+        issue: document.getElementById("text").value,
+        priority: "N/A",
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        address: document.getElementById("address").value
+      };
+      const ticketKey = `ticket-${Date.now()}`;
+      localStorage.setItem(ticketKey, JSON.stringify(ticketData));
+      console.log("Local IT Ticket Submitted:", ticketData);
+      alert("Your IT ticket has been submitted successfully.");
+      form.reset();
+      form.classList.remove("was-validated");
+      loadLocalTickets(); // Refresh local tickets
+    });
+
+    /* -------------------------------
+       2) Admin Login Handling
+    ------------------------------- */
+    document.getElementById("adminLoginForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const form = event.target;
+      if (!form.checkValidity()) {
+        form.classList.add("was-validated");
+        return;
+      }
+      const username = document.getElementById("adminUsername").value;
+      const password = document.getElementById("adminPassword").value;
+      console.log("Admin Login Attempt:", { username, password });
+      alert("Admin login submitted. (Demo only.)");
+      form.reset();
+      form.classList.remove("was-validated");
+    });
+
+    /* -------------------------------
+       3) Hospital Trouble Ticket Handling
+    ------------------------------- */
+    function showHospitalSubDepartments() {
+      const department = document.getElementById("hospitalDepartment").value;
+      document.getElementById("hospitalMedicalSub").style.display = (department === "Medical") ? "block" : "none";
+      document.getElementById("hospitalAdminSub").style.display = (department === "Administrative") ? "block" : "none";
+      document.getElementById("hospitalSupportSub").style.display = (department === "Support") ? "block" : "none";
+    }
+    document.getElementById("hospitalTicketForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const form = event.target;
+      if (!form.checkValidity()) {
+        alert("Please fill out all required fields before submitting.");
+        return;
+      }
+      const department = document.getElementById("hospitalDepartment").value;
+      let subDepartment = "";
+      if (department === "Medical") {
+        subDepartment = document.getElementById("hospitalMedicalDepartment").value;
+      } else if (department === "Administrative") {
+        subDepartment = document.getElementById("hospitalAdminDepartment").value;
+      } else if (department === "Support") {
+        subDepartment = document.getElementById("hospitalSupportDepartment").value;
+      }
+      const ticketData = {
+        department: department,
+        subDepartment: subDepartment,
+        issue: document.getElementById("hospitalIssue").value,
+        priority: document.querySelector('input[name="hospitalPriority"]:checked').value
+      };
+      const ticketKey = `ticket-${Date.now()}`;
+      localStorage.setItem(ticketKey, JSON.stringify(ticketData));
+      console.log("Local Hospital Ticket Submitted:", ticketData);
+      alert("Hospital ticket has been submitted successfully.");
+      form.reset();
+      loadLocalTickets(); // Refresh local tickets
+    });
+
+    /* -------------------------------
+       4) Local Ticket Dashboard Functions
+    ------------------------------- */
+    function loadLocalTickets() {
+      const cardContainer = document.getElementById("cardContainer");
+      cardContainer.innerHTML = "";
+      const allKeys = Object.keys(localStorage).filter(key => key.startsWith("ticket-"));
+      if (allKeys.length === 0) {
+        cardContainer.innerHTML = '<p class="empty-message">No local tickets found in storage.</p>';
+        return;
+      }
+      allKeys.forEach(key => {
+        const ticketData = JSON.parse(localStorage.getItem(key)) || {};
+        const cardDiv = document.createElement("div");
+        cardDiv.classList.add("ticket-card");
+        cardDiv.innerHTML = `
+          <h2>Ticket: ${key}</h2>
+          <div class="ticket-field"><label>Department:</label> ${ticketData.department || "N/A"}</div>
+          <div class="ticket-field"><label>Sub-Department:</label> ${ticketData.subDepartment || "N/A"}</div>
+          <div class="ticket-field"><label>Issue:</label> ${ticketData.issue || "N/A"}</div>
+          <div class="ticket-field"><label>Priority:</label> ${ticketData.priority || "N/A"}</div>
+          ${ticketData.name ? `<div class="ticket-field"><label>Name:</label> ${ticketData.name}</div>` : ""}
+          ${ticketData.email ? `<div class="ticket-field"><label>Email:</label> ${ticketData.email}</div>` : ""}
+          ${ticketData.phone ? `<div class="ticket-field"><label>Phone:</label> ${ticketData.phone}</div>` : ""}
+          ${ticketData.address ? `<div class="ticket-field"><label>Address:</label> ${ticketData.address}</div>` : ""}
+          <div class="ticket-actions">
+            <div>
+              <label for="prioritySelect-${key}">Change Priority:</label>
+              <select id="prioritySelect-${key}">
+                <option value="Low" ${ticketData.priority === "Low" ? "selected" : ""}>Low</option>
+                <option value="Medium" ${ticketData.priority === "Medium" ? "selected" : ""}>Medium</option>
+                <option value="High" ${ticketData.priority === "High" ? "selected" : ""}>High</option>
+                <option value="Critical" ${ticketData.priority === "Critical" ? "selected" : ""}>Critical</option>
+              </select>
+            </div>
+            <button class="save-btn" onclick="saveNewPriority('${key}')">Save Priority</button>
+            <button class="delete-btn" onclick="deleteTicket('${key}')">Delete Ticket</button>
+          </div>
+        `;
+        cardContainer.appendChild(cardDiv);
+      });
+    }
+    function saveNewPriority(key) {
+      const selectEl = document.getElementById(`prioritySelect-${key}`);
+      if (!selectEl) return;
+      const newPriority = selectEl.value;
+      const ticketData = JSON.parse(localStorage.getItem(key)) || {};
+      ticketData.priority = newPriority;
+      localStorage.setItem(key, JSON.stringify(ticketData));
+      loadLocalTickets();
+    }
+    function deleteTicket(key) {
+      if (confirm("Are you sure you want to delete this ticket?")) {
+        localStorage.removeItem(key);
+        loadLocalTickets();
+      }
+    }
+    function clearAllTickets() {
+      if (confirm("Are you sure you want to clear all local tickets?")) {
+        Object.keys(localStorage).forEach(key => {
+          if (key.startsWith("ticket-")) {
+            localStorage.removeItem(key);
+          }
+        });
+        loadLocalTickets();
+      }
+    }
+
+    /* -------------------------------
+       5) Database Ticket Dashboard Functions (Using the "Ticket Data Overview" style)
+    ------------------------------- */
+    async function loadDatabaseTickets() {
+      const container = document.getElementById("tickets-container");
+      container.innerHTML = "<p>Loading database ticket data…</p>";
+      try {
+        // Fetch IT and Hospital tickets from the database API endpoints
+        const [itTickets, hospitalTickets] = await Promise.all([
+          fetchTicketsData(IT_TICKETS_ENDPOINT),
+          fetchTicketsData(HOSPITAL_TICKETS_ENDPOINT)
+        ]);
+        // Combine both arrays
+        const combinedTickets = [...itTickets, ...hospitalTickets];
+        processTicketsData(combinedTickets);
+        displayDatabaseTickets();
+      } catch (error) {
+        console.error("Error fetching database tickets:", error);
+        container.innerHTML = '<p class="error">An error occurred while fetching database tickets.</p>';
+      }
+    }
+    // Generic GET function to fetch tickets
+    async function fetchTicketsData(endpoint) {
+      const response = await fetch(endpoint);
+      if (!response.ok) {
+        throw new Error(`Network response was not ok (${response.status})`);
+      }
+      return await response.json();
+    }
+    // Save combined database tickets to localStorage key 'tickets' (for display purposes)
+    function processTicketsData(tickets) {
+      console.log("Fetched Database Tickets:", tickets);
+      localStorage.setItem("tickets", JSON.stringify(tickets));
+    }
+    // Display database tickets using the "Ticket Data Overview" style
+    function displayDatabaseTickets() {
+      const container = document.getElementById("tickets-container");
+      container.innerHTML = "";
+      const storedTickets = localStorage.getItem("tickets");
+      if (storedTickets) {
+        const tickets = JSON.parse(storedTickets);
+        const cardContainer = document.createElement("div");
+        cardContainer.className = "card-container";
+        tickets.forEach(ticket => {
+          const ticketCard = document.createElement("div");
+          ticketCard.className = "ticket";
+          // Card header
+          const heading = document.createElement("h2");
+          heading.textContent = ticket.title || "Ticket Detail";
+          ticketCard.appendChild(heading);
+          // Responsive table wrapper
+          const tableWrapper = document.createElement("div");
+          tableWrapper.className = "responsive-table";
+          const table = document.createElement("table");
+          Object.entries(ticket).forEach(([key, value]) => {
+            const row = document.createElement("tr");
+            const cellKey = document.createElement("th");
+            cellKey.textContent = key;
+            row.appendChild(cellKey);
+            const cellValue = document.createElement("td");
+            if (key === "attachments" && Array.isArray(value)) {
+              value.forEach(attachment => {
+                if (attachment.file_url) {
+                  const fileDisplayDiv = document.createElement("div");
+                  fileDisplayDiv.className = "file-display";
+                  const fileImg = document.createElement("img");
+                  fileImg.src = attachment.file_url;
+                  fileImg.alt = "Attachment Image";
+                  fileImg.className = "file-img";
+                  fileDisplayDiv.appendChild(fileImg);
+                  cellValue.appendChild(fileDisplayDiv);
+                }
+              });
+            } else if (key === "screenshot" && value) {
+              const img = document.createElement("img");
+              img.src = value;
+              img.alt = "Screenshot";
+              img.className = "screenshot-img";
+              cellValue.appendChild(img);
+            } else {
+              cellValue.textContent = (typeof value === "object" && value !== null && !Array.isArray(value)) 
+                ? JSON.stringify(value, null, 2) 
+                : value;
+            }
+            row.appendChild(cellValue);
+            table.appendChild(row);
+          });
+          tableWrapper.appendChild(table);
+          ticketCard.appendChild(tableWrapper);
+          cardContainer.appendChild(ticketCard);
+        });
+        container.appendChild(cardContainer);
+      } else {
+        container.innerHTML = '<p>No database tickets available.</p>';
+      }
+    }
+
+    // On page load, initialize both local and database ticket dashboards
+    window.addEventListener("load", () => {
+      loadLocalTickets();
+      loadDatabaseTickets();
+    });
+  </script>
+
+  <!-- Optional: Cursor Trail Effect (Preserved from your original implementation) -->
+
+</body>
+</html>
