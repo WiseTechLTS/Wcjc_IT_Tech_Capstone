@@ -1,0 +1,258 @@
+[
+  {
+      "model": "tickets.department",
+      "pk": 1,
+      "fields": {
+          "name": "Medical",
+          "parent": null
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 2,
+      "fields": {
+          "name": "Administrative",
+          "parent": null
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 3,
+      "fields": {
+          "name": "Support",
+          "parent": null
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 4,
+      "fields": {
+          "name": "ED",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 5,
+      "fields": {
+          "name": "OPD",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 6,
+      "fields": {
+          "name": "Inpatient",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 7,
+      "fields": {
+          "name": "Surgery",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 8,
+      "fields": {
+          "name": "ICU",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 9,
+      "fields": {
+          "name": "Pediatrics",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 10,
+      "fields": {
+          "name": "OB-GYN",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 11,
+      "fields": {
+          "name": "Cardiology",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 12,
+      "fields": {
+          "name": "Oncology",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 13,
+      "fields": {
+          "name": "Orthopedics",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 14,
+      "fields": {
+          "name": "Neurology",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 15,
+      "fields": {
+          "name": "Psychiatry",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 16,
+      "fields": {
+          "name": "Dermatology",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 17,
+      "fields": {
+          "name": "Radiology",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 18,
+      "fields": {
+          "name": "Pathology",
+          "parent": 1
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 19,
+      "fields": {
+          "name": "Admissions",
+          "parent": 2
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 20,
+      "fields": {
+          "name": "Billing",
+          "parent": 2
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 21,
+      "fields": {
+          "name": "HR",
+          "parent": 2
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 22,
+      "fields": {
+          "name": "MedicalRecords",
+          "parent": 2
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 23,
+      "fields": {
+          "name": "QualityAssurance",
+          "parent": 2
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 24,
+      "fields": {
+          "name": "PublicRelations",
+          "parent": 2
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 25,
+      "fields": {
+          "name": "Pharmacy",
+          "parent": 3
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 26,
+      "fields": {
+          "name": "Laboratory",
+          "parent": 3
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 27,
+      "fields": {
+          "name": "Biomedical",
+          "parent": 3
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 28,
+      "fields": {
+          "name": "Housekeeping",
+          "parent": 3
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 29,
+      "fields": {
+          "name": "Catering",
+          "parent": 3
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 30,
+      "fields": {
+          "name": "Security",
+          "parent": 3
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 31,
+      "fields": {
+          "name": "IT",
+          "parent": 3
+      }
+  },
+  {
+      "model": "tickets.department",
+      "pk": 32,
+      "fields": {
+          "name": "Transport",
+          "parent": 3
+      }
+  }
+]
