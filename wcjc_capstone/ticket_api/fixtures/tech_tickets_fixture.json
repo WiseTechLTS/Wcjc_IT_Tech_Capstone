@@ -1,0 +1,243 @@
+[
+    {
+      "model": "ticket_api.ticket",
+      "pk": 1,
+      "fields": {
+        "subject": "High Priority: Server Outage in Data Center",
+        "description": "The main data center server cluster is down, disrupting core applications. Immediate investigation required.",
+        "sub_department": 24,
+        "status": "open",
+        "created_at": "2025-04-01T08:00:00Z",
+        "updated_at": "2025-04-01T08:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 2,
+      "fields": {
+        "subject": "Network Latency Issues Reported",
+        "description": "Several users are experiencing high latency on the corporate VPN. Network diagnostics are underway.",
+        "sub_department": 24,
+        "status": "in_progress",
+        "created_at": "2025-04-01T08:30:00Z",
+        "updated_at": "2025-04-01T08:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 3,
+      "fields": {
+        "subject": "Software Deployment Failure",
+        "description": "A scheduled software update failed during deployment. Rollback procedures have been initiated.",
+        "sub_department": 24,
+        "status": "closed",
+        "created_at": "2025-04-01T09:00:00Z",
+        "updated_at": "2025-04-01T10:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 4,
+      "fields": {
+        "subject": "VPN Connectivity Outage",
+        "description": "Users are unable to connect to the VPN. Preliminary checks indicate a misconfiguration in the firewall.",
+        "sub_department": 24,
+        "status": "open",
+        "created_at": "2025-04-01T09:30:00Z",
+        "updated_at": "2025-04-01T09:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 5,
+      "fields": {
+        "subject": "Email Server Downtime",
+        "description": "The email server experienced a 15-minute downtime. A postmortem is in progress to determine the cause.",
+        "sub_department": 24,
+        "status": "in_progress",
+        "created_at": "2025-04-01T10:00:00Z",
+        "updated_at": "2025-04-01T10:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 6,
+      "fields": {
+        "subject": "Database Backup Failure",
+        "description": "Nightly database backup failed due to disk space issues. Backup process has been manually triggered.",
+        "sub_department": 24,
+        "status": "open",
+        "created_at": "2025-04-01T10:30:00Z",
+        "updated_at": "2025-04-01T10:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 7,
+      "fields": {
+        "subject": "Critical: Malware Detection on Workstations",
+        "description": "Multiple workstations have detected malware. The IT security team is isolating affected systems.",
+        "sub_department": 24,
+        "status": "in_progress",
+        "created_at": "2025-04-01T11:00:00Z",
+        "updated_at": "2025-04-01T11:15:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 8,
+      "fields": {
+        "subject": "Cloud Service Latency Issues",
+        "description": "Users are reporting high latency with our cloud-based services. Monitoring and diagnostics are active.",
+        "sub_department": 24,
+        "status": "open",
+        "created_at": "2025-04-01T11:30:00Z",
+        "updated_at": "2025-04-01T11:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 9,
+      "fields": {
+        "subject": "Internal Chat Application Outage",
+        "description": "The company’s internal chat app is down for several departments. A fix is being deployed.",
+        "sub_department": 24,
+        "status": "closed",
+        "created_at": "2025-04-01T12:00:00Z",
+        "updated_at": "2025-04-01T12:45:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 10,
+      "fields": {
+        "subject": "High CPU Usage on Critical Servers",
+        "description": "A spike in CPU usage has been detected on our critical servers. Performance logs are being analyzed.",
+        "sub_department": 24,
+        "status": "open",
+        "created_at": "2025-04-01T12:30:00Z",
+        "updated_at": "2025-04-01T12:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 11,
+      "fields": {
+        "subject": "Network Switch Firmware Update",
+        "description": "A scheduled firmware update for network switches is due. Maintenance window scheduled tonight.",
+        "sub_department": 24,
+        "status": "closed",
+        "created_at": "2025-04-01T13:00:00Z",
+        "updated_at": "2025-04-01T14:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 12,
+      "fields": {
+        "subject": "Web Application Performance Degradation",
+        "description": "Users are reporting slow performance on the corporate web portal. A performance review is underway.",
+        "sub_department": 24,
+        "status": "open",
+        "created_at": "2025-04-01T13:30:00Z",
+        "updated_at": "2025-04-01T13:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 13,
+      "fields": {
+        "subject": "Endpoint Security Patch Deployment",
+        "description": "A critical security patch for endpoint protection software is scheduled for deployment.",
+        "sub_department": 24,
+        "status": "in_progress",
+        "created_at": "2025-04-01T14:00:00Z",
+        "updated_at": "2025-04-01T14:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 14,
+      "fields": {
+        "subject": "Remote Desktop Service Intermittent Failures",
+        "description": "Intermittent failures reported in the remote desktop service. IT support is collecting logs.",
+        "sub_department": 24,
+        "status": "open",
+        "created_at": "2025-04-01T14:30:00Z",
+        "updated_at": "2025-04-01T14:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 15,
+      "fields": {
+        "subject": "Incident: Unauthorized Access Attempt Detected",
+        "description": "An unauthorized access attempt was detected on our firewall. Security protocols are being enforced.",
+        "sub_department": 24,
+        "status": "closed",
+        "created_at": "2025-04-01T15:00:00Z",
+        "updated_at": "2025-04-01T15:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 16,
+      "fields": {
+        "subject": "Cloud Infrastructure Scaling Request",
+        "description": "A request to scale cloud infrastructure to meet increased demand has been submitted and is under review.",
+        "sub_department": 24,
+        "status": "open",
+        "created_at": "2025-04-01T15:30:00Z",
+        "updated_at": "2025-04-01T15:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 17,
+      "fields": {
+        "subject": "High Priority: Data Breach Containment",
+        "description": "A potential data breach has been identified. The IT security team is actively containing the threat.",
+        "sub_department": 24,
+        "status": "in_progress",
+        "created_at": "2025-04-01T16:00:00Z",
+        "updated_at": "2025-04-01T16:15:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 18,
+      "fields": {
+        "subject": "Critical: API Gateway Performance Issue",
+        "description": "Performance degradation observed at the API gateway. Engineering team is investigating load patterns.",
+        "sub_department": 24,
+        "status": "open",
+        "created_at": "2025-04-01T16:30:00Z",
+        "updated_at": "2025-04-01T16:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 19,
+      "fields": {
+        "subject": "Scheduled Maintenance: Infrastructure Upgrade",
+        "description": "A planned upgrade for IT infrastructure is scheduled to minimize future outages. Notifications have been sent.",
+        "sub_department": 24,
+        "status": "closed",
+        "created_at": "2025-04-01T17:00:00Z",
+        "updated_at": "2025-04-01T18:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 20,
+      "fields": {
+        "subject": "Tech Support: Mobile Device Management Issue",
+        "description": "Issues reported with the mobile device management software impacting remote workers. Resolution in progress.",
+        "sub_department": 24,
+        "status": "open",
+        "created_at": "2025-04-01T17:30:00Z",
+        "updated_at": "2025-04-01T17:30:00Z"
+      }
+    }
+  ]
+  

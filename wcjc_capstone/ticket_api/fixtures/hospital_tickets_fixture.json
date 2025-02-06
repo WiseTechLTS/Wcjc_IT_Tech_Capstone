@@ -1,0 +1,135 @@
+[
+    {
+      "model": "ticket_api.ticket",
+      "pk": 1,
+      "fields": {
+        "subject": "Incident 1: Patient Fall",
+        "description": "Patient slipped near the main entrance causing minor bruises. Immediate assessment performed.",
+        "sub_department": 1,
+        "status": "open",
+        "created_at": "2025-04-02T08:00:00Z",
+        "updated_at": "2025-04-02T08:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.hospitalticket",
+      "pk": 1,
+      "fields": {
+        "ticket": 1,
+        "patient_id": "P001",
+        "room_number": "Room 101A",
+        "additional_info": "Patient fell near the lobby; no major injuries, follow-up required."
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 2,
+      "fields": {
+        "subject": "Incident 2: Medication Error",
+        "description": "A dosage error occurred during medication administration in the ICU. Corrective measures implemented.",
+        "sub_department": 2,
+        "status": "in_progress",
+        "created_at": "2025-04-02T08:05:00Z",
+        "updated_at": "2025-04-02T08:05:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.hospitalticket",
+      "pk": 2,
+      "fields": {
+        "ticket": 2,
+        "patient_id": "P002",
+        "room_number": "Room 102B",
+        "additional_info": "Dosage recalculated and administered correctly; incident under review."
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 3,
+      "fields": {
+        "subject": "Incident 3: Equipment Failure",
+        "description": "Medical ventilator malfunctioned in the ICU, prompting an immediate technical inspection.",
+        "sub_department": 3,
+        "status": "closed",
+        "created_at": "2025-04-02T08:10:00Z",
+        "updated_at": "2025-04-02T08:15:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.hospitalticket",
+      "pk": 3,
+      "fields": {
+        "ticket": 3,
+        "patient_id": "P003",
+        "room_number": "Room 103A",
+        "additional_info": "Ventilator replaced; maintenance log updated and staff re-trained."
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 4,
+      "fields": {
+        "subject": "Incident 4: Staffing Shortage",
+        "description": "Unexpected staffing shortage in the Emergency Department led to service delays.",
+        "sub_department": 4,
+        "status": "open",
+        "created_at": "2025-04-02T08:15:00Z",
+        "updated_at": "2025-04-02T08:15:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.hospitalticket",
+      "pk": 4,
+      "fields": {
+        "ticket": 4,
+        "patient_id": "P004",
+        "room_number": "Room 104B",
+        "additional_info": "Staffing levels restored after emergency call; incident documented for future scheduling."
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 5,
+      "fields": {
+        "subject": "Incident 5: Diagnostic Delay",
+        "description": "Delay in processing radiology results affected timely treatment decisions.",
+        "sub_department": 5,
+        "status": "in_progress",
+        "created_at": "2025-04-02T08:20:00Z",
+        "updated_at": "2025-04-02T08:20:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.hospitalticket",
+      "pk": 5,
+      "fields": {
+        "ticket": 5,
+        "patient_id": "P005",
+        "room_number": "Room 105A",
+        "additional_info": "Delayed imaging resolved; further monitoring scheduled."
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 120,
+      "fields": {
+        "subject": "Incident 120: Facility Maintenance Request",
+        "description": "Routine maintenance request for facility upgrades in patient areas, including lighting and HVAC improvements.",
+        "sub_department": 15,
+        "status": "closed",
+        "created_at": "2025-04-02T17:55:00Z",
+        "updated_at": "2025-04-02T18:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.hospitalticket",
+      "pk": 120,
+      "fields": {
+        "ticket": 120,
+        "patient_id": "P120",
+        "room_number": "Room 115B",
+        "additional_info": "Maintenance completed with minimal disruption; follow-up inspection scheduled."
+      }
+    }
+  ]
+  

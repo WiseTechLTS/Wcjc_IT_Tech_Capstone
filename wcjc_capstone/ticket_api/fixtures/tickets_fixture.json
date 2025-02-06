@@ -1,0 +1,603 @@
+[
+    {
+      "model": "ticket_api.ticket",
+      "pk": 1,
+      "fields": {
+        "subject": "Delayed Emergency Admission",
+        "description": "Patient experienced a delay in admission to the Emergency Department due to high patient volume.",
+        "sub_department": 1,
+        "status": "open",
+        "created_at": "2025-03-01T08:30:00Z",
+        "updated_at": "2025-03-01T08:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 2,
+      "fields": {
+        "subject": "ICU Ventilator Issue",
+        "description": "A ventilator in the ICU is malfunctioning and requires urgent maintenance.",
+        "sub_department": 2,
+        "status": "in_progress",
+        "created_at": "2025-03-01T09:15:00Z",
+        "updated_at": "2025-03-01T09:15:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 3,
+      "fields": {
+        "subject": "Surgery Room Overbooking",
+        "description": "A scheduling conflict has resulted in the overbooking of an operating room.",
+        "sub_department": 3,
+        "status": "open",
+        "created_at": "2025-03-01T10:00:00Z",
+        "updated_at": "2025-03-01T10:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 4,
+      "fields": {
+        "subject": "Inpatient Meal Delay",
+        "description": "Multiple inpatients reported a delay in receiving meals during lunch hours.",
+        "sub_department": 4,
+        "status": "open",
+        "created_at": "2025-03-01T11:00:00Z",
+        "updated_at": "2025-03-01T11:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 5,
+      "fields": {
+        "subject": "Cardiology Test Results Pending",
+        "description": "Test results for a critical cardiology examination are delayed beyond the expected turnaround.",
+        "sub_department": 5,
+        "status": "in_progress",
+        "created_at": "2025-03-01T12:00:00Z",
+        "updated_at": "2025-03-01T12:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 6,
+      "fields": {
+        "subject": "Oncology Medication Supply Shortage",
+        "description": "A shortage of essential oncology medications has been observed.",
+        "sub_department": 6,
+        "status": "open",
+        "created_at": "2025-03-01T12:30:00Z",
+        "updated_at": "2025-03-01T12:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 7,
+      "fields": {
+        "subject": "Neurology Equipment Calibration",
+        "description": "Neurology diagnostic equipment requires recalibration to ensure accurate readings.",
+        "sub_department": 7,
+        "status": "closed",
+        "created_at": "2025-03-01T13:00:00Z",
+        "updated_at": "2025-03-01T13:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 8,
+      "fields": {
+        "subject": "OB-GYN Appointment Rescheduling",
+        "description": "A patient requested a reschedule of her OB-GYN appointment due to a conflicting commitment.",
+        "sub_department": 8,
+        "status": "open",
+        "created_at": "2025-03-01T13:30:00Z",
+        "updated_at": "2025-03-01T13:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 9,
+      "fields": {
+        "subject": "Pediatrics Vaccination Update",
+        "description": "Updated vaccination records are required for a group of pediatric patients.",
+        "sub_department": 9,
+        "status": "closed",
+        "created_at": "2025-03-01T14:00:00Z",
+        "updated_at": "2025-03-01T14:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 10,
+      "fields": {
+        "subject": "OPD Registration Glitch",
+        "description": "The outpatient registration system experienced a temporary technical glitch.",
+        "sub_department": 10,
+        "status": "in_progress",
+        "created_at": "2025-03-01T14:30:00Z",
+        "updated_at": "2025-03-01T14:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 11,
+      "fields": {
+        "subject": "Orthopedics X-Ray Delay",
+        "description": "Delay in processing X-ray results is affecting timely treatment in orthopedics.",
+        "sub_department": 11,
+        "status": "open",
+        "created_at": "2025-03-01T15:00:00Z",
+        "updated_at": "2025-03-01T15:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 12,
+      "fields": {
+        "subject": "Radiology Imaging Error",
+        "description": "An error occurred during a digital imaging procedure in radiology.",
+        "sub_department": 12,
+        "status": "open",
+        "created_at": "2025-03-01T15:30:00Z",
+        "updated_at": "2025-03-01T15:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 13,
+      "fields": {
+        "subject": "Pathology Sample Contamination",
+        "description": "There is a suspected contamination in a batch of pathology samples.",
+        "sub_department": 13,
+        "status": "in_progress",
+        "created_at": "2025-03-01T16:00:00Z",
+        "updated_at": "2025-03-01T16:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 14,
+      "fields": {
+        "subject": "Psychiatry Consultation Request",
+        "description": "An urgent consultation is requested in psychiatry for a high-risk patient.",
+        "sub_department": 14,
+        "status": "open",
+        "created_at": "2025-03-01T16:30:00Z",
+        "updated_at": "2025-03-01T16:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 15,
+      "fields": {
+        "subject": "Dermatology Appointment Cancellation",
+        "description": "A patient has cancelled her scheduled dermatology appointment.",
+        "sub_department": 15,
+        "status": "closed",
+        "created_at": "2025-03-01T17:00:00Z",
+        "updated_at": "2025-03-01T17:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 16,
+      "fields": {
+        "subject": "Admissions System Crash",
+        "description": "The admissions system unexpectedly crashed during peak hours.",
+        "sub_department": 16,
+        "status": "open",
+        "created_at": "2025-03-02T08:30:00Z",
+        "updated_at": "2025-03-02T08:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 17,
+      "fields": {
+        "subject": "Billing Invoice Discrepancy",
+        "description": "The billing department has detected a discrepancy in patient invoices.",
+        "sub_department": 17,
+        "status": "in_progress",
+        "created_at": "2025-03-02T09:00:00Z",
+        "updated_at": "2025-03-02T09:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 18,
+      "fields": {
+        "subject": "Medical Records Archive Issue",
+        "description": "There is an issue with archiving older records in the Medical Records department.",
+        "sub_department": 18,
+        "status": "open",
+        "created_at": "2025-03-02T09:30:00Z",
+        "updated_at": "2025-03-02T09:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 19,
+      "fields": {
+        "subject": "Quality Assurance Audit Scheduled",
+        "description": "A routine audit has been scheduled by the Quality Assurance department.",
+        "sub_department": 19,
+        "status": "closed",
+        "created_at": "2025-03-02T10:00:00Z",
+        "updated_at": "2025-03-02T10:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 20,
+      "fields": {
+        "subject": "HR Onboarding Delay",
+        "description": "There is a delay in processing new employee onboarding documents in HR.",
+        "sub_department": 20,
+        "status": "open",
+        "created_at": "2025-03-02T10:30:00Z",
+        "updated_at": "2025-03-02T10:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 21,
+      "fields": {
+        "subject": "Public Relations Media Inquiry",
+        "description": "The Public Relations team received an inquiry from the media regarding hospital performance.",
+        "sub_department": 21,
+        "status": "open",
+        "created_at": "2025-03-02T11:00:00Z",
+        "updated_at": "2025-03-02T11:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 22,
+      "fields": {
+        "subject": "Pharmacy Inventory Reorder",
+        "description": "Low inventory levels detected in the Pharmacy have triggered a reorder process.",
+        "sub_department": 22,
+        "status": "in_progress",
+        "created_at": "2025-03-02T11:30:00Z",
+        "updated_at": "2025-03-02T11:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 23,
+      "fields": {
+        "subject": "Laboratory Test Delay",
+        "description": "A delay in processing laboratory tests is affecting patient diagnostics.",
+        "sub_department": 23,
+        "status": "open",
+        "created_at": "2025-03-02T12:00:00Z",
+        "updated_at": "2025-03-02T12:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 24,
+      "fields": {
+        "subject": "IT System Upgrade Required",
+        "description": "The IT department has identified a need for an upgrade to outdated systems.",
+        "sub_department": 24,
+        "status": "open",
+        "created_at": "2025-03-02T12:30:00Z",
+        "updated_at": "2025-03-02T12:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 25,
+      "fields": {
+        "subject": "Security Breach Alert",
+        "description": "A potential breach in restricted areas has been reported to Security.",
+        "sub_department": 25,
+        "status": "in_progress",
+        "created_at": "2025-03-02T13:00:00Z",
+        "updated_at": "2025-03-02T13:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 26,
+      "fields": {
+        "subject": "Housekeeping Supply Shortage",
+        "description": "Housekeeping is experiencing a shortage of cleaning supplies.",
+        "sub_department": 26,
+        "status": "open",
+        "created_at": "2025-03-02T13:30:00Z",
+        "updated_at": "2025-03-02T13:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 27,
+      "fields": {
+        "subject": "Transport Service Delay",
+        "description": "Delays in patient transfer services have been reported by the Transport department.",
+        "sub_department": 27,
+        "status": "open",
+        "created_at": "2025-03-02T14:00:00Z",
+        "updated_at": "2025-03-02T14:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 28,
+      "fields": {
+        "subject": "Biomedical Equipment Maintenance",
+        "description": "Scheduled maintenance for biomedical equipment has been completed.",
+        "sub_department": 28,
+        "status": "closed",
+        "created_at": "2025-03-02T14:30:00Z",
+        "updated_at": "2025-03-02T14:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 29,
+      "fields": {
+        "subject": "Catering Menu Update",
+        "description": "The Catering department has updated its menu to improve patient satisfaction.",
+        "sub_department": 29,
+        "status": "open",
+        "created_at": "2025-03-02T15:00:00Z",
+        "updated_at": "2025-03-02T15:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 30,
+      "fields": {
+        "subject": "ED Staffing Issue",
+        "description": "Unexpected drop in staffing levels reported in the Emergency Department.",
+        "sub_department": 1,
+        "status": "open",
+        "created_at": "2025-03-03T08:00:00Z",
+        "updated_at": "2025-03-03T08:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 31,
+      "fields": {
+        "subject": "ICU Oxygen Supply Alert",
+        "description": "ICU urgently requires a refill of oxygen supplies due to increased demand.",
+        "sub_department": 2,
+        "status": "in_progress",
+        "created_at": "2025-03-03T08:30:00Z",
+        "updated_at": "2025-03-03T08:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 32,
+      "fields": {
+        "subject": "Surgery Instrument Sterilization",
+        "description": "Delay in the sterilization process for surgical instruments in the OR.",
+        "sub_department": 3,
+        "status": "open",
+        "created_at": "2025-03-03T09:00:00Z",
+        "updated_at": "2025-03-03T09:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 33,
+      "fields": {
+        "subject": "Inpatient Room Temperature Issue",
+        "description": "A malfunction in temperature control was reported in an inpatient room.",
+        "sub_department": 4,
+        "status": "open",
+        "created_at": "2025-03-03T09:30:00Z",
+        "updated_at": "2025-03-03T09:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 34,
+      "fields": {
+        "subject": "Cardiology EKG Machine Error",
+        "description": "An error was detected in the EKG machine readings in the Cardiology unit.",
+        "sub_department": 5,
+        "status": "in_progress",
+        "created_at": "2025-03-03T10:00:00Z",
+        "updated_at": "2025-03-03T10:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 35,
+      "fields": {
+        "subject": "Oncology Lab Results Mismatch",
+        "description": "Mismatch found in lab results for an oncology test, further review required.",
+        "sub_department": 6,
+        "status": "open",
+        "created_at": "2025-03-03T10:30:00Z",
+        "updated_at": "2025-03-03T10:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 36,
+      "fields": {
+        "subject": "Neurology Consultation Delay",
+        "description": "There is a delay in scheduling neurology consultations.",
+        "sub_department": 7,
+        "status": "open",
+        "created_at": "2025-03-03T11:00:00Z",
+        "updated_at": "2025-03-03T11:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 37,
+      "fields": {
+        "subject": "OB-GYN Ultrasound Reschedule",
+        "description": "An ultrasound appointment in OB-GYN needs rescheduling due to equipment issues.",
+        "sub_department": 8,
+        "status": "in_progress",
+        "created_at": "2025-03-03T11:30:00Z",
+        "updated_at": "2025-03-03T11:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 38,
+      "fields": {
+        "subject": "Pediatrics Emergency Call",
+        "description": "An emergency call was received for pediatric care requiring immediate attention.",
+        "sub_department": 9,
+        "status": "open",
+        "created_at": "2025-03-03T12:00:00Z",
+        "updated_at": "2025-03-03T12:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 39,
+      "fields": {
+        "subject": "OPD Queue Overflow",
+        "description": "Long wait times in the outpatient department due to an overflow in the queue.",
+        "sub_department": 10,
+        "status": "in_progress",
+        "created_at": "2025-03-03T12:30:00Z",
+        "updated_at": "2025-03-03T12:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 40,
+      "fields": {
+        "subject": "Orthopedics Cast Replacement Request",
+        "description": "A patient in orthopedics requires a cast replacement following a fracture.",
+        "sub_department": 11,
+        "status": "open",
+        "created_at": "2025-03-03T13:00:00Z",
+        "updated_at": "2025-03-03T13:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 41,
+      "fields": {
+        "subject": "Radiology CT Scan Delay",
+        "description": "Delay in scheduling a CT scan in radiology is affecting timely diagnostics.",
+        "sub_department": 12,
+        "status": "open",
+        "created_at": "2025-03-03T13:30:00Z",
+        "updated_at": "2025-03-03T13:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 42,
+      "fields": {
+        "subject": "Pathology Report Error",
+        "description": "An error in processing pathology reports has been identified and requires investigation.",
+        "sub_department": 13,
+        "status": "in_progress",
+        "created_at": "2025-03-03T14:00:00Z",
+        "updated_at": "2025-03-03T14:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 43,
+      "fields": {
+        "subject": "Psychiatry Follow-up Request",
+        "description": "A follow-up appointment has been requested for ongoing psychiatric care.",
+        "sub_department": 14,
+        "status": "closed",
+        "created_at": "2025-03-03T14:30:00Z",
+        "updated_at": "2025-03-03T14:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 44,
+      "fields": {
+        "subject": "Dermatology Skin Test Result",
+        "description": "Review needed for skin test results in the Dermatology department.",
+        "sub_department": 15,
+        "status": "open",
+        "created_at": "2025-03-03T15:00:00Z",
+        "updated_at": "2025-03-03T15:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 45,
+      "fields": {
+        "subject": "Admissions Data Migration",
+        "description": "Legacy admissions data is being migrated to the new system.",
+        "sub_department": 16,
+        "status": "closed",
+        "created_at": "2025-03-03T15:30:00Z",
+        "updated_at": "2025-03-03T15:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 46,
+      "fields": {
+        "subject": "Billing System Upgrade",
+        "description": "The billing system upgrade has been completed and is under monitoring.",
+        "sub_department": 17,
+        "status": "open",
+        "created_at": "2025-03-03T16:00:00Z",
+        "updated_at": "2025-03-03T16:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 47,
+      "fields": {
+        "subject": "MedicalRecords Data Sync Issue",
+        "description": "A synchronization issue has been detected in the MedicalRecords department.",
+        "sub_department": 18,
+        "status": "in_progress",
+        "created_at": "2025-03-03T16:30:00Z",
+        "updated_at": "2025-03-03T16:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 48,
+      "fields": {
+        "subject": "Quality Assurance Compliance Check",
+        "description": "A routine compliance check is underway in the Quality Assurance department.",
+        "sub_department": 19,
+        "status": "open",
+        "created_at": "2025-03-03T17:00:00Z",
+        "updated_at": "2025-03-03T17:00:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 49,
+      "fields": {
+        "subject": "HR Policy Update Implementation",
+        "description": "Implementation of updated HR policies requires an internal briefing.",
+        "sub_department": 20,
+        "status": "open",
+        "created_at": "2025-03-03T17:30:00Z",
+        "updated_at": "2025-03-03T17:30:00Z"
+      }
+    },
+    {
+      "model": "ticket_api.ticket",
+      "pk": 50,
+      "fields": {
+        "subject": "Public Relations Social Media Strategy",
+        "description": "The Public Relations team is developing a new social media strategy to enhance community engagement.",
+        "sub_department": 21,
+        "status": "in_progress",
+        "created_at": "2025-03-03T18:00:00Z",
+        "updated_at": "2025-03-03T18:00:00Z"
+      }
+    }
+  ]
+  
