@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Department, HospitalTicket, ITTicket, TicketAttachment
+from .models import HospitalTicket
 
 class DepartmentSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
