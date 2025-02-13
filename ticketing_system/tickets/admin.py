@@ -66,14 +66,14 @@ class DepartmentAdmin(admin.ModelAdmin):
 # -----------------------------------------------------------------------------
 @admin.register(HospitalTicket)
 class HospitalTicketAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'patient_name', 'primary_department', 'sub_department', 'priority', 'created_at')
+    list_display = ('id', 'title', 'employee_name', 'primary_department', 'sub_department', 'priority', 'created_at')
     list_filter = ('primary_department', 'sub_department', 'priority', 'created_at')
-    search_fields = ('title', 'patient_name', 'description')
+    search_fields = ('title', 'employee_name', 'description')
     ordering = ('-created_at',)
     readonly_fields = ('created_at', 'updated_at')
     fieldsets = (
         (None, {'fields': ('title', 'description')}),
-        ('Patient & Department Details', {'fields': ('patient_name', 'primary_department', 'sub_department', 'priority')}),
+        ('Patient & Department Details', {'fields': ('employee_name', 'primary_department', 'sub_department', 'priority')}),
         ('Timestamps', {'fields': ('created_at', 'updated_at')}),
     )
     view_on_site = False

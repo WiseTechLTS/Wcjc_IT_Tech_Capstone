@@ -41,7 +41,7 @@ PRIORITY_LEVEL_CHOICES = [
 class HospitalTicket(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    patient_name = models.CharField(max_length=255, blank=True, null=True)
+    employee_name = models.CharField(max_length=255, blank=True, null=True)
     # Primary department: Only departments with no parent.
     primary_department = models.ForeignKey(
         Department,
