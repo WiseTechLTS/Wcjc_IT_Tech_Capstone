@@ -1,0 +1,288 @@
+[
+    {
+      "model": "ticket_api.parentdepartment",
+      "pk": 1,
+      "fields": {
+        "name": "Medical",
+        "description": "Clinical services including emergency, inpatient, and specialized care."
+      }
+    },
+    {
+      "model": "ticket_api.parentdepartment",
+      "pk": 2,
+      "fields": {
+        "name": "Administrative",
+        "description": "Operational management, billing, human resources, and records."
+      }
+    },
+    {
+      "model": "ticket_api.parentdepartment",
+      "pk": 3,
+      "fields": {
+        "name": "Support",
+        "description": "Services such as IT, security, facility maintenance, and more."
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 1,
+      "fields": {
+        "name": "ED",
+        "priority": 1,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 2,
+      "fields": {
+        "name": "ICU",
+        "priority": 2,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 3,
+      "fields": {
+        "name": "Surgery",
+        "priority": 3,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 4,
+      "fields": {
+        "name": "Inpatient",
+        "priority": 4,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 5,
+      "fields": {
+        "name": "Cardiology",
+        "priority": 5,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 6,
+      "fields": {
+        "name": "Oncology",
+        "priority": 6,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 7,
+      "fields": {
+        "name": "Neurology",
+        "priority": 7,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 8,
+      "fields": {
+        "name": "OB-GYN",
+        "priority": 8,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 9,
+      "fields": {
+        "name": "Pediatrics",
+        "priority": 9,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 10,
+      "fields": {
+        "name": "OPD",
+        "priority": 10,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 11,
+      "fields": {
+        "name": "Orthopedics",
+        "priority": 11,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 12,
+      "fields": {
+        "name": "Radiology",
+        "priority": 12,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 13,
+      "fields": {
+        "name": "Pathology",
+        "priority": 13,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 14,
+      "fields": {
+        "name": "Psychiatry",
+        "priority": 14,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 15,
+      "fields": {
+        "name": "Dermatology",
+        "priority": 15,
+        "parent_department": 1
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 16,
+      "fields": {
+        "name": "Admissions",
+        "priority": 1,
+        "parent_department": 2
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 17,
+      "fields": {
+        "name": "Billing",
+        "priority": 2,
+        "parent_department": 2
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 18,
+      "fields": {
+        "name": "MedicalRecords",
+        "priority": 3,
+        "parent_department": 2
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 19,
+      "fields": {
+        "name": "QualityAssurance",
+        "priority": 4,
+        "parent_department": 2
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 20,
+      "fields": {
+        "name": "HR",
+        "priority": 5,
+        "parent_department": 2
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 21,
+      "fields": {
+        "name": "PublicRelations",
+        "priority": 6,
+        "parent_department": 2
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 22,
+      "fields": {
+        "name": "Pharmacy",
+        "priority": 1,
+        "parent_department": 3
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 23,
+      "fields": {
+        "name": "Laboratory",
+        "priority": 2,
+        "parent_department": 3
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 24,
+      "fields": {
+        "name": "IT",
+        "priority": 3,
+        "parent_department": 3
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 25,
+      "fields": {
+        "name": "Security",
+        "priority": 4,
+        "parent_department": 3
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 26,
+      "fields": {
+        "name": "Housekeeping",
+        "priority": 5,
+        "parent_department": 3
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 27,
+      "fields": {
+        "name": "Transport",
+        "priority": 6,
+        "parent_department": 3
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 28,
+      "fields": {
+        "name": "Biomedical",
+        "priority": 7,
+        "parent_department": 3
+      }
+    },
+    {
+      "model": "ticket_api.subdepartment",
+      "pk": 29,
+      "fields": {
+        "name": "Catering",
+        "priority": 8,
+        "parent_department": 3
+      }
+    }
+  ]
+  

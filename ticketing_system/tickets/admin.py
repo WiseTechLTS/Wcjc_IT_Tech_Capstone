@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.utils.safestring import mark_safe
-from .models import Department, HospitalTicket, ITTicket, TicketAttachment
+from .models import HospitalTicket, TicketAttachment
 
 # -----------------------------------------------------------------------------
 # Helper function to generate a thumbnail from an attachment.

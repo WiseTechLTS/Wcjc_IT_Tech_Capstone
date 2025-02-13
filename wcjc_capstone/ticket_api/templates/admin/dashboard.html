@@ -1,0 +1,148 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrahead %}
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        integrity="sha384-9ndCyUa6z5o0m6R+8T8e6hEw5XKpLvN3r9G+Fv4Gz8H5onA+ChYohclIIBb+YJv+"
+        crossorigin="anonymous">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Custom styles for a modern, principled dashboard */
+    .dashboard-card {
+      border: none;
+      border-radius: 0.5rem;
+      box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+    .metric-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    .metric-label {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+    /* Ensure proper spacing for timeline chart */
+    .chart-container {
+      padding: 1rem;
+    }
+  </style>
+{% endblock extrahead %}
+
+{% block content %}
+<div class="container my-5">
+  <header class="mb-5">
+    <h1 class="display-5">{{ site_header }}</h1>
+    <p class="lead">A real-time overview of key hospital management metrics and ticket activity.</p>
+  </header>
+
+  <!-- Metrics Section -->
+  <div class="row row-cols-1 row-cols-md-4 g-4">
+    <div class="col">
+      <div class="card text-white bg-primary dashboard-card">
+        <div class="card-body text-center">
+          <div class="metric-value">{{ total_parent_departments }}</div>
+          <div class="metric-label">Parent Departments</div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card text-white bg-success dashboard-card">
+        <div class="card-body text-center">
+          <div class="metric-value">{{ total_sub_departments }}</div>
+          <div class="metric-label">Sub Departments</div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card text-white bg-warning dashboard-card">
+        <div class="card-body text-center">
+          <div class="metric-value">{{ total_tickets }}</div>
+          <div class="metric-label">Tickets</div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card text-white bg-danger dashboard-card">
+        <div class="card-body text-center">
+          <div class="metric-value">{{ total_hospital_tickets }}</div>
+          <div class="metric-label">Hospital Tickets</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline Visualization -->
+  <section class="mt-5">
+    <div class="card dashboard-card">
+      <div class="card-header">
+        <h4 class="mb-0">Ticket Activity Timeline</h4>
+      </div>
+      <div class="card-body chart-container">
+        <canvas id="timelineChart" width="400" height="150"></canvas>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  // Parse timeline data provided by the dashboard view
+  const timelineData = JSON.parse('{{ timeline_data|escapejs }}');
+
+  // Initialize the Chart.js line chart for the timeline
+  const ctx = document.getElementById('timelineChart').getContext('2d');
+  const timelineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: timelineData.labels,
+      datasets: [{
+        label: 'Tickets Created',
+        data: timelineData.counts,
+        fill: true,
+        backgroundColor: 'rgba(54, 162, 235, 0.3)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        tension: 0.3,
+        pointRadius: 4,
+        pointBackgroundColor: 'rgba(54, 162, 235, 1)'
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          type: 'time',
+          time: {
+            parser: 'YYYY-MM-DD HH:mm',
+            tooltipFormat: 'll HH:mm',
+            unit: 'hour',
+            displayFormats: {
+              hour: 'MMM D, HH:mm'
+            }
+          },
+          title: {
+            display: true,
+            text: 'Time'
+          }
+        },
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Number of Tickets'
+          },
+          ticks: {
+            precision: 0
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        }
+      }
+    }
+  });
+</script>
+{% endblock %}
