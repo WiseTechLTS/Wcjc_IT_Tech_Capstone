@@ -7,12 +7,13 @@
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
   <!-- Animate.css for professional animations -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <!-- Font Awesome for iconography -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <!-- Bootstrap 5 Bundle JS -->
   <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <style>
+    /* Global Styles */
     body {
       background: linear-gradient(to bottom right, #3a3a3a, #2a2a2a);
       color: #ffffff;
@@ -23,6 +24,7 @@
       min-height: 100vh;
       padding-top: 30px;
     }
+    /* Main container style */
     .main-container {
       width: 100%;
       max-width: 900px;
@@ -30,6 +32,7 @@
       margin: 0 auto;
       animation: fadeIn 1s ease-in-out;
     }
+    /* Card styles */
     .card {
       border: none;
       border-radius: 15px;
@@ -39,6 +42,7 @@
     header {
       border-radius: 15px 15px 0 0;
     }
+    /* Button styling */
     .btn-primary {
       background-color: #5c5c5c;
       border: none;
@@ -47,6 +51,7 @@
     .btn-primary:hover {
       background-color: #4a4a4a;
     }
+    /* Input styling */
     .form-control {
       border-radius: 10px;
       box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -62,8 +67,9 @@
       width: 100%;
       min-height: 3rem;
     }
+    /* Remove non-standard property */
     input, select, textarea {
-      field-sizing: content;
+      box-sizing: border-box;
     }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
@@ -83,82 +89,128 @@
     }
   </style>
   <script>
-    // Function to display the appropriate sub-department dropdown
+    /********************************************************************
+     * Function: showSubDepartments
+     * Purpose: Display the appropriate sub-department dropdown based
+     *          on the selected department.
+     ********************************************************************/
     function showSubDepartments() {
       const department = document.getElementById("department").value;
+      console.log("showSubDepartments: Selected department =", department);
+
+      // Toggle visibility for each sub-department section
       document.getElementById("medical-sub-department").style.display = (department === "Medical") ? "block" : "none";
       document.getElementById("admin-sub-department").style.display = (department === "Administrative") ? "block" : "none";
       document.getElementById("support-sub-department").style.display = (department === "Support") ? "block" : "none";
     }
 
-    // Function to save the ticket to local storage
+    /********************************************************************
+     * Function: saveTicket
+     * Purpose: Save a ticket object to local storage with error handling.
+     ********************************************************************/
     function saveTicket(ticket) {
-      const tickets = JSON.parse(localStorage.getItem('tickets')) || [];
-      tickets.push(ticket);
-      localStorage.setItem('tickets', JSON.stringify(tickets));
-      console.log('New ticket saved:', ticket);
-      console.log('All saved tickets:', tickets);
+      try {
+        const tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+        tickets.push(ticket);
+        localStorage.setItem('tickets', JSON.stringify(tickets));
+        console.log('saveTicket: New ticket saved:', ticket);
+        console.log('saveTicket: All saved tickets:', tickets);
+      } catch (error) {
+        console.error('saveTicket: Error saving ticket to local storage:', error);
+      }
     }
 
-    // Function to populate and display the list of saved tickets in a modal
+    /********************************************************************
+     * Function: viewTickets
+     * Purpose: Populate and display the list of saved tickets in a modal.
+     ********************************************************************/
     function viewTickets(event) {
       event.preventDefault();
-      const tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+      console.log("viewTickets: 'View Saved Tickets' link clicked.");
+      
+      let tickets = [];
+      try {
+        tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+      } catch (error) {
+        console.error('viewTickets: Error retrieving tickets from local storage:', error);
+      }
+      
       const listContainer = document.getElementById('ticketList');
-      listContainer.innerHTML = ''; // Clear any existing list items
+      listContainer.innerHTML = ''; // Clear any existing items
 
       if (tickets.length === 0) {
         listContainer.innerHTML = '<p class="text-center">No tickets found.</p>';
+        console.log("viewTickets: No tickets found in local storage.");
       } else {
         tickets.forEach((ticket, index) => {
           const item = document.createElement('button');
           item.type = 'button';
           item.className = 'list-group-item list-group-item-action';
           item.innerHTML = `<strong>${ticket.name}</strong> - ${new Date(ticket.timestamp).toLocaleString()}`;
-          // When an item is clicked, go to the ticket detail page
+          console.log("viewTickets: Creating list item for ticket index", index);
+          // Navigate to the ticket detail view when clicked
           item.addEventListener('click', function() {
             goToTicket(index);
           });
           listContainer.appendChild(item);
         });
+        console.log("viewTickets: Ticket list populated.");
       }
-      // Show the tickets list modal
+      // Display the ticket list modal
       const listModal = new bootstrap.Modal(document.getElementById('ticketListModal'));
       listModal.show();
+      console.log("viewTickets: Ticket list modal displayed.");
     }
 
-    // Function to navigate to the selected ticket detail view
+    /********************************************************************
+     * Function: goToTicket
+     * Purpose: Navigate to the detailed view of a selected ticket.
+     ********************************************************************/
     function goToTicket(index) {
-      // In this example, we simulate navigation by redirecting to a detail page with a query parameter.
-      // You can adjust this to display ticket details as needed.
+      console.log("goToTicket: Navigating to ticket detail for index =", index);
       window.location.href = `ticket_detail.html?ticketIndex=${index}`;
     }
 
-    // Function to show the submission confirmation modal pop-up
+    /********************************************************************
+     * Function: showSubmissionModal
+     * Purpose: Display the submission confirmation modal popup.
+     ********************************************************************/
     function showSubmissionModal() {
+      console.log("showSubmissionModal: Displaying submission confirmation modal.");
       const modalElement = document.getElementById('ticketModal');
       const modal = new bootstrap.Modal(modalElement);
       modal.show();
     }
 
-    // Bootstrap form validation and ticket saving
+    /********************************************************************
+     * Initialization: DOMContentLoaded
+     * Purpose: Set up event listeners and initialize application logic.
+     ********************************************************************/
     document.addEventListener('DOMContentLoaded', function() {
-      // Attach sub-department display logic
+      console.log("DOMContentLoaded: Initializing event listeners.");
+
+      // Attach change event listener to the department dropdown
       document.getElementById("department").addEventListener("change", showSubDepartments);
 
-      // Form submission handling
+      // Form submission handling with Bootstrap validation
       const form = document.getElementById('ticketForm');
       form.addEventListener('submit', function(event) {
+        console.log("Form Submission: Event triggered.");
         if (!form.checkValidity()) {
           event.preventDefault();
           event.stopPropagation();
+          console.log("Form Submission: Validation failed.");
         } else {
-          event.preventDefault(); // Prevent default submit for demo purposes
+          event.preventDefault(); // Prevent actual form submission for demo purposes
+          console.log("Form Submission: Validation succeeded. Processing submission.");
+
+          // Create ticket object with form values
           const ticket = {
             name: document.getElementById('name').value,
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
-            address: document.getElementById('address').value,
+            // Address field is optional; check if it exists
+            address: document.getElementById('address') ? document.getElementById('address').value : '',
             department: document.getElementById('department').value,
             subDepartment: (() => {
               const dept = document.getElementById('department').value;
@@ -168,40 +220,52 @@
               return "";
             })(),
             issue: document.getElementById('issue').value,
-            screenshot: document.getElementById('screenshot').files[0] ? document.getElementById('screenshot').files[0].name : null,
+            screenshot: document.getElementById('screenshot').files[0]
+                        ? document.getElementById('screenshot').files[0].name
+                        : null,
             timestamp: new Date().toISOString()
           };
-          // Save ticket and log to console
+          console.log("Form Submission: Ticket object created:", ticket);
+
+          // Save ticket using the defined function
           saveTicket(ticket);
-          // Reset the form
+
+          // Reset form and validation styling
           form.reset();
           form.classList.remove('was-validated');
+          // Hide all sub-department dropdowns after resetting the form
           document.getElementById("medical-sub-department").style.display = "none";
           document.getElementById("admin-sub-department").style.display = "none";
           document.getElementById("support-sub-department").style.display = "none";
-          // Show pop-up notification with animation
+
+          // Show confirmation modal after submission
           showSubmissionModal();
         }
         form.classList.add('was-validated');
       });
 
-      // Attach event listener to view tickets link
+      // Attach click event listener to the "View Saved Tickets" link
       document.getElementById('viewTicketsLink').addEventListener('click', viewTickets);
     });
   </script>
 </head>
 <body>
-  <div class="main-container animate__animated animate__fadeIn">
+  <!-- Main content area -->
+  <main class="main-container animate__animated animate__fadeIn">
+    <!-- Page header -->
     <header>
       <h1 class="text-center text-white mb-4">Unified IT Ticket System</h1>
-      <!-- Link to view tickets -->
+      <!-- Link to view saved tickets -->
       <a href="#" id="viewTicketsLink" class="view-link text-white">View Saved Tickets</a>
     </header>
+
+    <!-- Ticket submission section -->
     <section class="card animate__animated animate__fadeInUp">
       <header class="card-header bg-dark text-white text-center">
         <h2>Submit an IT Ticket</h2>
       </header>
       <div class="card-body bg-light text-dark">
+        <!-- Ticket form with semantic fieldsets -->
         <form id="ticketForm" action="submit_ticket.php" method="post" class="needs-validation" novalidate>
           <!-- Personal Information Section -->
           <fieldset class="mb-4">
@@ -234,6 +298,7 @@
                 <option value="Support">Support/Ancillary Departments</option>
               </select>
             </div>
+            <!-- Medical sub-department selection -->
             <div id="medical-sub-department" class="mb-3" style="display: none;">
               <label for="medical-department" class="form-label">Medical Sub-Department:</label>
               <select id="medical-department" name="medical-department" class="form-control">
@@ -254,6 +319,7 @@
                 <option value="Pathology">Pathology</option>
               </select>
             </div>
+            <!-- Administrative sub-department selection -->
             <div id="admin-sub-department" class="mb-3" style="display: none;">
               <label for="admin-department" class="form-label">Administrative Sub-Department:</label>
               <select id="admin-department" name="admin-department" class="form-control">
@@ -265,6 +331,7 @@
                 <option value="PublicRelations">Public Relations/Marketing</option>
               </select>
             </div>
+            <!-- Support sub-department selection -->
             <div id="support-sub-department" class="mb-3" style="display: none;">
               <label for="support-department" class="form-label">Support Sub-Department:</label>
               <select id="support-department" name="support-department" class="form-control">
@@ -301,10 +368,10 @@
         </form>
       </div>
     </section>
-  </div>
+  </main>
 
   <!-- Modal for Submission Confirmation -->
-  <div class="modal fade" id="ticketModal" tabindex="-1" aria-labelledby="ticketModalLabel" aria-hidden="true">
+  <div class="modal fade" id="ticketModal" tabindex="-1" aria-labelledby="ticketModalLabel" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered animate__animated animate__zoomIn">
       <div class="modal-content">
         <div class="modal-header">
@@ -322,7 +389,7 @@
   </div>
 
   <!-- Modal for Displaying Saved Tickets List -->
-  <div class="modal fade" id="ticketListModal" tabindex="-1" aria-labelledby="ticketListModalLabel" aria-hidden="true">
+  <div class="modal fade" id="ticketListModal" tabindex="-1" aria-labelledby="ticketListModalLabel" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered animate__animated animate__zoomIn">
       <div class="modal-content">
         <div class="modal-header">
@@ -331,7 +398,7 @@
         </div>
         <div class="modal-body">
           <div class="list-group" id="ticketList">
-            <!-- Tickets will be dynamically inserted here -->
+            <!-- Dynamically generated ticket items will appear here -->
           </div>
         </div>
         <div class="modal-footer">
@@ -340,6 +407,5 @@
       </div>
     </div>
   </div>
-  
 </body>
 </html>
